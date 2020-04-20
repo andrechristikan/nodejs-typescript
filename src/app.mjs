@@ -23,10 +23,10 @@ global.trans = languange.trans;
 global.structure = new Response();
 global.csrf = csrf(config("csrf"));
 
-console.log("tt");
-app.use(logger.allRequest);
-console.log("hh");
-// app.use(logger.error);
+
+config("logger.logs").forEach( (value, index, array) => {
+  app.use(logger.create(value));
+});
 app.use(bodyParser.urlencoded(config("body-parser.urlencoded")));
 app.use(bodyParser.json(config("body-parser.json")));
 app.use(bodyParser.raw(config("body-parser.raw")));
@@ -35,14 +35,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use((req, res, next) => {
   let send = res.send;
-  console.log("dd");
   res.send = (body) => {
     res.resData = body;
     res.send = send;
-    console.log("ff");
     res.send(body);
   };
-  console.log("cc");
   next();
 });
 
@@ -53,10 +50,13 @@ app.use((req, res, next) => {
   res.status(404).json(json);
 });
 
-// app.use((err, req, res, next) => {
-//   let json = structure.error(trans("app.internal_server_error"));
-//   res.status(500).json(json);
-// });
+app.use((err, req, res, next) => {
+  let json =
+    env("NODE_ENV") == "production"
+      ? structure.error(trans("app.internal_server_error"))
+      : err;
+  res.status(500).json(json);
+});
 
 app.listen(env("PORT"), env("HOST"), () => {
   console.log(

@@ -2,10 +2,8 @@ import express from "express";
 const router = express.Router();
 
 /* GET home page. */
-router.get("/", function (req, res, next) {
-  console.log("aa");
+router.get("/www", function (req, res, next) {
   res.json({ title: "Express" });
-  console.log("bb");
 });
 
-export default router;
+module.exports = router;
