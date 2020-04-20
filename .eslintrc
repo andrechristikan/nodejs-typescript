@@ -6,7 +6,8 @@
   "parser": "babel-eslint",
   "parserOptions": {
     "sourceType": "module",
-    "allowImportExportEverywhere": true
+    "allowImportExportEverywhere": true,
+    "ecmaVersion": 2018
   },
   "ecmaFeatures": {
     "arrowFunctions": true,
@@ -91,7 +92,7 @@
     "object-shorthand": 2,
 
     // Strict
-    "strict": [2, "global"],
+    "strict": [2, "modules"],
 
     // Variable
     "no-delete-var": 2,
@@ -101,7 +102,7 @@
     "no-undef-init": 2,
     // "no-undefined":2,
     // "no-undef":2,
-    "no-unused-vars": 2,
+    "no-unused-vars": 1,
     "no-use-before-define": 2,
 
     // Common Js
@@ -143,7 +144,7 @@
     "no-trailing-spaces": [2, { "skipBlankLines": true }],
     "no-whitespace-before-property": 2,
     "object-curly-spacing": [2, "always"],
-    "padded-blocks": 2,
+    // "padded-blocks": 2,
     "quote-props": [2, "as-needed"],
     "quotes": [
       2,
@@ -188,7 +189,7 @@
     // "no-fallthrough": 2,
     "no-floating-decimal": 2,
     "no-global-assign": 2,
-    "no-magic-numbers": 2,
+    // "no-magic-numbers": 2,
     "no-loop-func": 2,
     "no-lone-blocks": 2,
     "no-labels": 2,
@@ -222,11 +223,11 @@
     "radix": [2, "as-needed"],
     "vars-on-top": 1,
     "wrap-iife": [2, "inside"],
-    "yoda": 2,
-
-    // Prettier
-    "prettier/prettier": ["error"]
+    "yoda": 2
   },
-  "extends": ["eslint:recommended", "prettier"],
-  "plugins": ["prettier"]
+  "extends": [
+    "eslint:recommended"
+    // "plugin:prettier/recommended",
+    // "prettier"
+  ]
 }
