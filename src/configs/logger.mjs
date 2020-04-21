@@ -19,5 +19,20 @@ export default {
       //   "success"
       // ],
     },
+    {
+      rules: {
+        path: "./src/logs/error",
+        size: "100M",
+        maxSize: "200M",
+        compress: true,
+        interval: "1d",
+      },
+      routes: ["*"],
+      includes: [
+        "client-error", 
+        "server-error", 
+        // "success"
+      ],
+    },
   ],
 };
