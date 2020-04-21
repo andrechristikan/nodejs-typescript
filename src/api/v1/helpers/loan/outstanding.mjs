@@ -176,7 +176,7 @@ const graStrataInstallment = (loan, inter) => {
   return amountPerMonthInstallmentWithoutInterest;
 };
 
-const graStrataCalculate = (loan) => {
+const graStrata = (loan) => {
   let data = [];
   let allOutstandingNumberWithoutInterest = 0;
   let allLoanAmountWithoutInterest = 0;
@@ -240,7 +240,7 @@ const graStrataCalculate = (loan) => {
   return response;
 };
 
-const graKaryaCalculate = (loans) => {
+const graKarya = (loans) => {
   let data = [];
   let allOutstandingNumberWithoutInterest = 0;
   let allLoanAmountWithoutInterest = 0;
@@ -301,7 +301,7 @@ const graKaryaCalculate = (loans) => {
   return response;
 };
 
-const graDPCalculate = (loans) => {
+const graDP = (loans) => {
   let data = [];
   let allOutstandingNumberWithoutInterest = 0;
   let allLoanAmountWithoutInterest = 0;
@@ -362,7 +362,7 @@ const graDPCalculate = (loans) => {
   return response;
 };
 
-const graSewaCalculate = (loans) => {
+const graSewa = (loans) => {
   let data = [];
   let allOutstandingNumberWithoutInterest = 0;
   let allLoanAmountWithoutInterest = 0;
@@ -423,6 +423,183 @@ const graSewaCalculate = (loans) => {
   return response;
 };
 
+const all = (graSewa, graDP, graKarya, graStrata) => {
+  let details = graSewa.details
+    .concat(graKarya.details)
+    .concat(graDP.details)
+    .concat(graStrata.details);
+
+  let data = {
+    countLoan: details.length,
+    allLoanAmountWithoutInterest:
+      graSewa.allLoanAmountWithoutInterest +
+      graDP.allOutstandingNumberWithoutInterest +
+      graKarya.allLoanAmountWithoutInterest +
+      graStrata.allLoanAmountWithoutInterest,
+    allOutstandingNumberWithoutInterest:
+      graSewa.allOutstandingNumberWithoutInterest +
+      graDP.allOutstandingNumberWithoutInterest +
+      graKarya.allOutstandingNumberWithoutInterest +
+      graStrata.allOutstandingNumberWithoutInterest,
+    detailsOutstandingAmount: {
+      graSewa: graSewa.allLoanAmountWithoutInterest,
+      graDP: graDP.allOutstandingNumberWithoutInterest,
+      graKarya: graKarya.allLoanAmountWithoutInterest,
+      graStrata: graStrata.allLoanAmountWithoutInterest,
+    },
+    details: details,
+  };
+  return data;
+};
+
+const uniqueBorrower = (loans) => {
+  let allOutstandingNumberWithoutInterest = 0;
+  let details = [];
+  loans.forEach((value, index) => {
+    let loanGraSewa = value.loan.filter(
+      (val) => val.loan.product.productType == "GraSewa"
+    );
+    let loanGraKarya = value.loan.filter(
+      (val) => val.loan.product.productType == "GraKarya"
+    );
+    let loanGraDP = value.loan.filter(
+      (val) => val.loan.product.productType == "GraDP"
+    );
+    let loanGraStrata = value.loan.filter(
+      (val) => val.loan.product.productType == "GraStrata"
+    );
+    let installmentSewa = graSewa(loanGraSewa)
+      .allOutstandingNumberWithoutInterest;
+    let installmentKarya = graKarya(loanGraKarya)
+      .allOutstandingNumberWithoutInterest;
+    let installmentDP = graDP(loanGraDP).allOutstandingNumberWithoutInterest;
+    let installmentStrata = graStrata(loanGraStrata)
+      .allOutstandingNumberWithoutInterest;
+    let allOutstandingNumberWithoutInterest =
+      installmentSewa + installmentKarya + installmentDP + installmentStrata;
+
+    let outstandingWithoutInterest =
+      installmentSewa + installmentKarya + installmentDP + installmentStrata;
+    allOutstandingNumberWithoutInterest += outstandingWithoutInterest;
+    let detail = {
+      borrowerId: value._id.borrowerId,
+      borrowerName: value._id.borrowerName,
+      count: value.count,
+      allOutstandingNumberWithoutInterest: outstandingWithoutInterest,
+    };
+
+    details.push(detail);
+  });
+
+  let data = {
+    countUniqueBorrower: loans.length,
+    allOutstandingNumberWithoutInterest: allOutstandingNumberWithoutInterest,
+    details: details,
+  };
+  return data;
+};
+
+const province = (loans) => {
+  let allOutstandingNumberWithoutInterest = 0;
+  let details = [];
+  loans.forEach((value, index) => {
+    let loanGraSewa = value.loan.filter(
+      (val) => val.loan.product.productType == "GraSewa"
+    );
+    let loanGraKarya = value.loan.filter(
+      (val) => val.loan.product.productType == "GraKarya"
+    );
+    let loanGraDP = value.loan.filter(
+      (val) => val.loan.product.productType == "GraDP"
+    );
+    let loanGraStrata = value.loan.filter(
+      (val) => val.loan.product.productType == "GraStrata"
+    );
+    let installmentSewa = graSewa(loanGraSewa)
+      .allOutstandingNumberWithoutInterest;
+    let installmentKarya = graKarya(loanGraKarya)
+      .allOutstandingNumberWithoutInterest;
+    let installmentDP = graDP(loanGraDP).allOutstandingNumberWithoutInterest;
+    let installmentStrata = graStrata(loanGraStrata)
+      .allOutstandingNumberWithoutInterest;
+    let outstandingWithoutInterest =
+      installmentSewa + installmentKarya + installmentDP + installmentStrata;
+    allOutstandingNumberWithoutInterest += outstandingWithoutInterest;
+    let detail = {
+      province: value._id.province,
+      count: value._count,
+      outstandingWithoutInterest: outstandingWithoutInterest,
+    };
+
+    details.push(detail);
+  });
+
+  let data = {
+    countUniqueBorrower: loans.length,
+    allOutstandingNumberWithoutInterest: allOutstandingNumberWithoutInterest,
+    details: details,
+  };
+  return data;
+};
+
+const age = (loans, start_age, end_age) => {
+  let allOutstandingNumberWithoutInterest = 0;
+  let count = 0;
+  let details = [];
+  loans.forEach((value, index) => {
+    let loanGraSewa = value.loan.filter(
+      (val) => val.loan.product.productType == "GraSewa"
+    );
+    let loanGraKarya = value.loan.filter(
+      (val) => val.loan.product.productType == "GraKarya"
+    );
+    let loanGraDP = value.loan.filter(
+      (val) => val.loan.product.productType == "GraDP"
+    );
+    let loanGraStrata = value.loan.filter(
+      (val) => val.loan.product.productType == "GraStrata"
+    );
+    let installmentSewa = graSewa(loanGraSewa)
+      .allOutstandingNumberWithoutInterest;
+    let installmentKarya = graKarya(
+      loanGraKarya
+    ).allOutstandingNumberWithoutInterest;
+    let installmentDP = graDP(loanGraDP)
+      .allOutstandingNumberWithoutInterest;
+    let installmentStrata = graStrata(
+      loanGraStrata
+    ).allOutstandingNumberWithoutInterest;
+    let outstandingWithoutInterest =
+      installmentSewa + installmentKarya + installmentDP + installmentStrata;
+    allOutstandingNumberWithoutInterest += outstandingWithoutInterest;
+
+    let details_age = {
+      garSewa: installmentSewa,
+      graKarya: installmentKarya,
+      graDP: installmentDP,
+      graStrata: installmentStrata,
+    };
+    count += value.count;
+
+    let detail = {
+      age: value._id.age,
+      count: value.count,
+      outstandingWithoutInterest: outstandingWithoutInterest,
+      detailsOutstanding: details_age,
+    };
+    details.push(detail);
+  });
+
+  let data = {
+    age: `${start_age}-${end_age}`,
+    countLoan: count,
+    allOutstandingNumberWithoutInterest: allOutstandingNumberWithoutInterest,
+    details: details,
+  };
+
+  return data;
+};
+
 export default {
   graSewaInstallment,
   graSewaUnpaid,
@@ -436,8 +613,12 @@ export default {
   graStrataInstallment,
   graStrataUnpaid,
   graStrataPartial,
-  graStrataCalculate,
-  graKaryaCalculate,
-  graDPCalculate,
-  graSewaCalculate,
+  graStrata,
+  graKarya,
+  graDP,
+  graSewa,
+  all,
+  uniqueBorrower,
+  province,
+  age,
 };
