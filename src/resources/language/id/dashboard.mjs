@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   index: {
     success: "Dasboard Index Display"
   }

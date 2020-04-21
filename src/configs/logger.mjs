@@ -10,8 +10,14 @@ export default {
         compress: true,
         interval: "1d",
       },
-      // routes: ["/q2qw1", "/qqq", "/ttt"],
       routes: ["*"],
+      includes: ["*"],
+      // routes: ["/user"],
+      // includes: [
+      //   "client-error", 
+      //   "server-error", 
+      //   "success"
+      // ],
     },
   ],
 };

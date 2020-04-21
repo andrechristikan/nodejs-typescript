@@ -1,35 +1,32 @@
 import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
-import Languange from "./helpers/languange";
-import Env from "./helpers/env";
-import Response from "./helpers/response";
-import Config from "./helpers/config";
-import Logger from "./helpers/logger";
-import routers from "./routes";
-import bodyParser from "body-parser";
+import env from "./core/env";
+import core from "./core";
+import routers from "./api";
+import { urlencoded, json, raw } from "body-parser";
 import cors from "cors";
 import csrf from "csurf";
 
 const app = express();
-const { env } = new Env();
+const { Language, Logger, Response, Config, Database } = core;
 const { config } = new Config();
 global.config = config;
-global.env = env;
 
-const languange = new Languange(env("LANGUAGE"));
-const logger = new Logger();
-global.trans = languange.trans;
+const { trans } = new Language(env("LANGUAGE"));
+const { logger } = new Logger();
+const { mongoDb } = new Database();
+mongoDb();
+global.trans = trans;
 global.structure = new Response();
 global.csrf = csrf(config("csrf"));
 
-
-config("logger.logs").forEach( (value, index, array) => {
-  app.use(logger.create(value));
+config("logger.logs").forEach((value, index, array) => {
+  app.use(logger(value));
 });
-app.use(bodyParser.urlencoded(config("body-parser.urlencoded")));
-app.use(bodyParser.json(config("body-parser.json")));
-app.use(bodyParser.raw(config("body-parser.raw")));
+app.use(urlencoded(config("body-parser.urlencoded")));
+app.use(json(config("body-parser.json")));
+app.use(raw(config("body-parser.raw")));
 app.use(cors(config("cors")));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
@@ -43,7 +40,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(`/${env("ROUTE_PREFIX")}/v${env("VERSION")}`, routers);
+const router = routers[`v${env("VERSION")}`];
+app.use(`/${env("ROUTE_PREFIX")}/v${env("VERSION")}`, router);
 
 app.use((req, res, next) => {
   let json = structure.error(trans("app.page.not-found"));

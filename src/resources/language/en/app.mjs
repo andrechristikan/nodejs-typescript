@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   page: {
     "not-found": "Page not Found",
   },
@@ -11,7 +11,10 @@ module.exports = {
   },
   db: {
     refuse: "Database refuse",
+    disconnect: "Database disconnected",
     connected: "Database connected",
+    closed:
+      "Mongoose default connection is disconnected due to application termination",
   },
   mailer: {
     ready: "Server is ready to send email.",
