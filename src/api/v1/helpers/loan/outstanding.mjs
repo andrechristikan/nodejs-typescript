@@ -35,12 +35,12 @@ const graSewaInstallment = (loan, inter) => {
 };
 
 const graDPUnpaid = (installmentUnpaid, loan) => {
-  let amount = graDPIntallment(loan, false) * installmentUnpaid.length;
+  let amount = graDPInstallment(loan, false) * installmentUnpaid.length;
   return amount;
 };
 
 const graDPPartial = (installmentPartial, loan) => {
-  let amountPerMonthInstallmentWithoutInterest = graDPIntallment(loan, false);
+  let amountPerMonthInstallmentWithoutInterest = graDPInstallment(loan, false);
 
   installmentPartial.forEach((value, key, array) => {
     let paidAmount = 0;
@@ -56,7 +56,7 @@ const graDPPartial = (installmentPartial, loan) => {
   return amount;
 };
 
-const graDPIntallment = (loan, inter) => {
+const graDPInstallment = (loan, inter) => {
   let tenor = loan.graDP.tenor ? loan.graDP.tenor : 0;
   let amountLoan = loan.graDP.amount ? loan.graDP.amount : 0;
   let interest = inter ? loan.graDP.interestPct : 0;
@@ -535,7 +535,7 @@ const province = (loans) => {
   });
 
   let data = {
-    countUniqueBorrower: loans.length,
+    countUniqueProvince: loans.length,
     allOutstandingNumberWithoutInterest: allOutstandingNumberWithoutInterest,
     details: details,
   };
@@ -604,7 +604,7 @@ export default {
   graSewaInstallment,
   graSewaUnpaid,
   graSewaPartial,
-  graDPIntallment,
+  graDPInstallment,
   graDPUnpaid,
   graDPPartial,
   graKaryaInstallment,
