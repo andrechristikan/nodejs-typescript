@@ -367,9 +367,7 @@ export const scopeOutstandingAge = (start, end) => {
     },
     {
       $match: {
-        $expr: {
-          $and: [{ $gte: ["$_id.age", start] }, { $lt: ["$_id.age", end] }],
-        },
+        "_id.age": { $gte: start, $lte: end },
       },
     }
   );
@@ -409,14 +407,11 @@ export const scopeOutstandingAgeWithMonthAndYear = (
     },
     {
       $match: {
-        $expr: {
-          $and: [
-            { $gte: ["$_id.age", start] },
-            { $lt: ["$_id.age", end] },
-            { $eq: ["$_id.disbursedMonthCreated", month] },
-            { $eq: ["$_id.disbursedYearCreated", year] },
-          ],
-        },
+        "_id.age": { $gte: start, $lte: end },
+        $and: [
+          { "_id.disbursedMonthCreated": month },
+          { "_id.disbursedYearCreated": year },
+        ],
       },
     }
   );
