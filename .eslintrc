@@ -1,0 +1,30 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": ["plugin:@typescript-eslint/recommended"],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "rules": {
+    "semi":[ 2, "always"],
+    "quotes": [2, "single", { "allowTemplateLiterals": true }],
+    "no-unused-vars": [2, { "caughtErrors": "none", "args": "none"  }],
+    "no-underscore-dangle":[2,{ "allow": ["_id"] }],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-explicit-any": 1,
+    "@typescript-eslint/no-inferrable-types": [
+      "warn", {
+        "ignoreParameters": true
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": "warn"
+  },
+  "globals":{
+    "responseStructure":"readonly",
+    // "env":"writable",
+    "env":"readonly",
+    "config":"readonly",
+    "trans":"readonly",
+    "version":"readonly"
+  }
+}
