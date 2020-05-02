@@ -5,19 +5,19 @@ mongoose.Promise = bluebird;
 mongoose.connect(config('database.url'), {
     user: config('database.user'),
     pass: config('database.password'),
-    poolSize: config('database.pool-size'),
-    autoIndex: config('database.auto-index'),
+    poolSize: config('database.poolSize'),
+    autoIndex: config('database.autoIndex'),
     serverSelectionTimeoutMS: config(
-        'database.server-selection-timeout-ms'
+        'database.serverSelectionTimeoutMS'
     ),
-    socketTimeoutMS: config('database.socket-timeout-ms'),
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
+    socketTimeoutMS: config('database.socketTimeoutMS'),
+    useNewUrlParser: config('database.useNewUrlParser'),
+    useUnifiedTopology: config('database.useUnifiedTopology'),
+    useCreateIndex: config('database.useCreateIndex'),
 }).then(() => {
-    console.log(trans('app.db.connected'));
+    logger.log({level:'info',message:trans('app.db.connected')});
 }).catch( err => {
-    console.log(trans('app.db.refuse') + err);
+    logger.log({level:'info',message:`${trans('app.db.refuse')} ${err}`});
 });
 
 

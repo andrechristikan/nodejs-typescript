@@ -1,11 +1,12 @@
 declare global {
     namespace NodeJS {
         interface Global {
-            config: Function
+            config: any
             version: string
-            responseStructure: any
-            trans: Function
-            env: Function
+            responseStructure: object
+            trans: any
+            env: any,
+            logger: any
         }
     }
 }

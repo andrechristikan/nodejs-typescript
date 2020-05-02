@@ -6,14 +6,13 @@ import cors from 'cors';
 import helmet from 'helmet';
 import bodyParser from 'body-parser';
 import hpp from 'hpp';
-import env from './core/env';
-import config from './core/config';
 import core from './core';
 import mongo from 'connect-mongo';
+import helper from './helpers';
 
 // Express configuration
 const app = express();
-const { Language, ResponseStructure, Database } = core;
+const { Language, Logger } = core;
 const { trans } = new Language(env('LANGUAGE'));
 const MongoStore = mongo(session);
 const sessionMongoStoreSetting = {
@@ -25,9 +24,16 @@ const sessionMongoStoreSetting = {
 global.trans = trans;
 global.version = env('VERSION');
 
-// Set responseStructure
+// Set Helper
+const { ResponseStructure } = helper;
 const responseStructure = new ResponseStructure();
 global.responseStructure = responseStructure;
+
+// Logger
+const loggerClass = new Logger();
+config('logger.httpRequest.logs').forEach((value: any, index: number) => {
+  app.use(loggerClass.httpRequest(value));
+});
 
 app.set('port', env('PORT') || 3000);
 app.set('host', env('HOST') || 'localhost');
@@ -35,8 +41,8 @@ app.use(compression());
 app.use(cors(config('cors')));
 app.use(helmet());
 app.use(hpp());
-app.use(bodyParser.urlencoded(config('body-parser.urlencoded')));
-app.use(bodyParser.json(config('body-parser.json')));
+app.use(bodyParser.urlencoded(config('bodyParser.urlencoded')));
+app.use(bodyParser.json(config('bodyParser.json')));
 app.use(session({
   ...config('session'),
   ...sessionMongoStoreSetting
@@ -59,7 +65,7 @@ app.use((req: Request, res: Response) => {
 app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
   const response =
     env('ENV') !== 'development'
-      ? responseStructure.error(trans('app.internal-server-error'))
+      ? responseStructure.error(trans('app.internalServerError'))
       : responseStructure.error(err);
   res.status(500).json(response);
 });

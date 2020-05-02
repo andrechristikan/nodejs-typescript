@@ -15,4 +15,4 @@ class Env{
 
 const envClass = new Env();
 global.env = envClass.env;
-export default envClass.env;
+export default {};

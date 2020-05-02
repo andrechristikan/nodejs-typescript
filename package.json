@@ -1,5 +1,5 @@
 {
-  "name": "andrechristikan",
+  "name": "resume",
   "version": "0.1.0",
   "private": true,
   "author": "Andre Christi Kan",
@@ -37,9 +37,13 @@
     "express-session": "^1.17.1",
     "helmet": "^3.22.0",
     "hpp": "^0.2.3",
-    "moment": "^2.24.0",
+    "moment": "^2.25.1",
     "mongoose": "^5.9.7",
-    "nodemailer": "^6.4.6"
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.4.6",
+    "rotating-file-stream": "^2.1.0",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^4.4.2"
   },
   "devDependencies": {
     "@types/async": "^3.2.0",
@@ -55,6 +59,7 @@
     "@types/hpp": "^0.2.1",
     "@types/jest": "^25.2.1",
     "@types/mongoose": "^5.7.13",
+    "@types/morgan": "^1.9.0",
     "@types/node": "^13.13.2",
     "@types/nodemailer": "^6.4.0",
     "@types/shelljs": "^0.8.7",
@@ -63,8 +68,10 @@
     "@typescript-eslint/parser": "^2.29.0",
     "concurrently": "^5.2.0",
     "eslint": "^6.8.0",
+    "install": "^0.13.0",
     "jest": "^25.5.2",
     "nodemon": "^2.0.3",
+    "npm": "^6.14.4",
     "shelljs": "^0.8.4",
     "supertest": "^4.0.2",
     "ts-jest": "^25.4.0",

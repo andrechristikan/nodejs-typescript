@@ -10,11 +10,11 @@ class Config {
       localConfig = localConfig[key[i]];
     }
 
-    const result: string = localConfig;
+    const result: any = localConfig;
     return result;
   };
 }
 
 const configClass = new Config();
 global.config = configClass.config;
-export default configClass.config;
+export default {};

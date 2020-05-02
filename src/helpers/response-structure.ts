@@ -7,7 +7,7 @@ class ResponseStructure {
     this.defaultMessage = trans('app.default.success');
   }
 
-  public success: Function = (message: any, data: any = null) => {
+  public success: any = (message: any, data: any = null) => {
 
     if (data !== null) {
       const response: {status: number; message: string; data: any} = {
@@ -28,7 +28,7 @@ class ResponseStructure {
     return response;
   };
 
-  public error: Function = (message: any, data: any  = null) => {
+  public error: any = (message: any, data: any  = null) => {
     if (data !== null) {
       const response: {status: number; message: string; data: any} = {
         status: 1,

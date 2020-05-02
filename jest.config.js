@@ -15,4 +15,4 @@ module.exports = {
         '**/tests/**/*.test.(ts|js)'
     ],
     testEnvironment: 'node'
-}
+};

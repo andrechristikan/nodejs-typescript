@@ -15,7 +15,7 @@ class Languange {
     for (let i = 0; i < key.length; i += 1) {
       localLang = localLang[key[i]];
     }
-    const result: string = localLang;
+    const result: any = localLang;
     return result;
   };
 }

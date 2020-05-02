@@ -5,14 +5,23 @@ const name: string = env('DB_NAME') || 'databaseName';
 const user: string = env('DB_USER') || '';
 const password: string = env('DB_PASSWORD') || '';
 const replicaSetName: string = env('DB_REPLICA_SET_NAME') || '';
+const poolSize = 10;
+const socketTimeoutMs = 45000;
+const serverSelectionTimeoutMs = 5000;
+const autoIndex = false;
+const useNewUrlParser = true;
+const useUnifiedTopology = true;
+const useCreateIndex = true;
 let url: string;
 
 if(model === 'replica'){
   const hosts: string[] = host.split(',');
+  const ports: string[] = port.split(',');
+  
   hosts.forEach((item: string, index: number) => {
     url = url
-      ? `${url},${item}:${port}`
-      : `${item}:${port}`;
+      ? `${url},${item}:${ports[index] || ports[0]}`
+      : `${item}:${ports[index] || ports[0]}`;
   });
 
   url = `mongodb://${url}/${name}?replicaSet=${replicaSetName}`;
@@ -22,16 +31,19 @@ if(model === 'replica'){
 
 
 export default {
-    url,
-    model,
-    host,
-    port,
-    name,
-    user,
-    password,
-    replicaSetName,
-    poolSize: 10,
-    socketTimeoutMs: 45000,
-    serverSelectionTimeoutMs: 5000,
-    autoIndex: false,
-  };
+  url,
+  model,
+  host,
+  port,
+  name,
+  user,
+  password,
+  replicaSetName : replicaSetName,
+  poolSize: poolSize,
+  socketTimeoutMs: socketTimeoutMs,
+  serverSelectionTimeoutMs: serverSelectionTimeoutMs,
+  autoIndex: autoIndex,
+  useNewUrlParser: useNewUrlParser,
+  useUnifiedTopology: useUnifiedTopology,
+  useCreateIndex: useCreateIndex,
+};

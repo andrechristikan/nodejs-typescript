@@ -5,13 +5,13 @@ export default {
   default: {
     success: 'Default message.',
   },
-  'internal-server-error': 'Internal Server Error',
+  internalServerError: 'Internal Server Error',
   server: {
     running: `${env('NAME')} app is listening at http://${env('HOST')}:${env('PORT')}`,
     env: 'Env in .env file '
   },
   db: {
     refuse: 'MongoDB connection error. Please make sure MongoDB is running. ',
-    connected: 'Database connected',
+    connected: `Database connected at ${config('database.url')}`,
   },
 };

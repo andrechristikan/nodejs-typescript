@@ -1,11 +1,15 @@
+import Env from './env';
+import Config from './config';
 import Language from './language';
-import ResponseStructure from './response-structure';
 import Database from './database';
+import Logger from './logger';
 
 
 
 export default {
+  Env,
+  Config,
   Language,
-  ResponseStructure,
-  Database
+  Database,
+  Logger
 };
