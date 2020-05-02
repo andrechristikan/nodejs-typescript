@@ -9,6 +9,7 @@ import hpp from 'hpp';
 import core from './core';
 import mongo from 'connect-mongo';
 import helper from './helpers';
+import router from './api';
 
 // Express configuration
 const app = express();
@@ -22,18 +23,11 @@ const sessionMongoStoreSetting = {
   })
 };
 global.trans = trans;
-global.version = env('VERSION');
 
 // Set Helper
 const { ResponseStructure } = helper;
 const responseStructure = new ResponseStructure();
 global.responseStructure = responseStructure;
-
-// Logger
-const loggerClass = new Logger();
-config('logger.httpRequest.logs').forEach((value: any, index: number) => {
-  app.use(loggerClass.httpRequest(value));
-});
 
 app.set('port', env('PORT') || 3000);
 app.set('host', env('HOST') || 'localhost');
@@ -51,12 +45,29 @@ app.use(session({
 // Static file
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-app.get('/', (req: Request, res: Response) => {
-    const response = responseStructure.success(trans('app.default.success'));
-    res.status(200).json(response);
+// Logger
+const loggerClass = new Logger();
+config('logger.httpRequest.logs').forEach((value: any, index: number) => {
+  app.use(loggerClass.httpRequest(value));
 });
 
+// Rescructuring response object
+app.use((req: Request, res: any, next: NextFunction) => {
+  const send: any = res.send;
+
+  // Add response data to response object
+  res.send = (body: any) => {
+    res.resData = body;
+    res.send = send;
+    res.send(body);
+  };
+  next();
+});
+
+// Router
+app.use('/', router);
+
+// Error Handler
 app.use((req: Request, res: Response) => {
   const response = responseStructure.error(trans('app.page.notFound'));
   res.status(404).json(response);

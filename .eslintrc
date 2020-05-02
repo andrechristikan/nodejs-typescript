@@ -25,7 +25,6 @@
     "env":"readonly",
     "config":"readonly",
     "trans":"readonly",
-    "version":"readonly",
     "logger":"readonly"
   }
 }

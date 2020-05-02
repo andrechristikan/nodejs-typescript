@@ -17,7 +17,7 @@ class Logger {
     });
 
     morgan.token('res-data', (req: Request, res: any) => {
-      return res.log.data;
+      return res.resData;
     });
   }
 
@@ -39,7 +39,7 @@ class Logger {
         flag = false;
       } else {
         for (const value of log.routes) {
-          flag = flag && (url == value ? false : true);
+          flag = flag && (url === value ? false : true);
           if (!flag) break;
         }
       }
@@ -51,14 +51,14 @@ class Logger {
           flag = true;
           for (const value of log.includes) {
             if (
-              value == 'clientError' &&
+              value === 'clientError' &&
               res.statusCode >= 400 &&
               res.statusCode < 500
             ) {
               flag = false;
-            } else if (value == 'serverError' && res.statusCode >= 500) {
+            } else if (value === 'serverError' && res.statusCode >= 500) {
               flag = false;
-            } else if (value == 'success' && res.statusCode < 400) {
+            } else if (value === 'success' && res.statusCode < 400) {
               flag = false;
             }
           }

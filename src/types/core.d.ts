@@ -7,6 +7,4 @@ declare function trans(key: string): any;
 
 declare const logger: any;
 
-declare const version: string;
-
-declare const responseStructure: object;
+declare const responseStructure: any;
