@@ -1,6 +1,6 @@
 const model: string = env('DB_MODEL') || 'single';
 const host: string = env('DB_HOST') || 'localhost';
-const port: string = env('DB_PORT') || 27017;
+const port: string = env('DB_PORT') || '27017';
 const name: string = env('DB_NAME') || 'databaseName';
 const user: string = env('DB_USER') || '';
 const password: string = env('DB_PASSWORD') || '';
@@ -38,12 +38,12 @@ export default {
   name,
   user,
   password,
-  replicaSetName : replicaSetName,
-  poolSize: poolSize,
-  socketTimeoutMs: socketTimeoutMs,
-  serverSelectionTimeoutMs: serverSelectionTimeoutMs,
-  autoIndex: autoIndex,
-  useNewUrlParser: useNewUrlParser,
-  useUnifiedTopology: useUnifiedTopology,
-  useCreateIndex: useCreateIndex,
+  replicaSetName ,
+  poolSize,
+  socketTimeoutMs,
+  serverSelectionTimeoutMs,
+  autoIndex,
+  useNewUrlParser,
+  useUnifiedTopology,
+  useCreateIndex,
 };

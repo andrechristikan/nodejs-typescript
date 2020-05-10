@@ -3,5 +3,5 @@ export default {
     saveUninitialized: true,
     secret: env('SESSION_KEY'),
     name: env('NAME'),
-    maxAge: env('SESSION_EXPIRED') * 60 * 1000
+    maxAge: parseInt(env('SESSION_EXPIRED')) * 60 * 1000
 };

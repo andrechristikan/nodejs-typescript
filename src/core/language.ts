@@ -8,14 +8,14 @@ class Languange {
     this.values = (languages as { [key: string]: any})[lang];
   }
 
-  public trans: any = (keys: string) => {
+  public trans = (keys: string): string => {
     let localLang: any = this.values;
     const key: Array<string> = keys.split('.');
 
     for (let i = 0; i < key.length; i += 1) {
       localLang = localLang[key[i]];
     }
-    const result: any = localLang;
+    const result: string = localLang;
     return result;
   };
 }

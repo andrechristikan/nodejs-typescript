@@ -32,8 +32,7 @@ export default {
                 routes: ['*'],
                 includes: [
                     'clientError', 
-                    'serverError', 
-                    // "success"
+                    'serverError'
                 ],
             },
         ],

@@ -1,10 +1,12 @@
 /** Makes a string harder to read. */
-declare function env(key: string): any;
+declare function env(key: string): string;
 
-declare function config(key: string): any;
+declare function config(key: string): string | any;
 
-declare function trans(key: string): any;
+declare function trans(key: string): string;
 
 declare const logger: any;
 
-declare const responseStructure: any;
+declare function responseStructureSuccess(message: string, data?: any): response;
+
+declare function responseStructureError(message: string, data?: any): response;

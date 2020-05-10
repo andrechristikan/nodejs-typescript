@@ -2,7 +2,7 @@
 import configs from '../configs';
 
 class Config {
-  public config: any = (keys: string) => {
+  public config = (keys: string): any => {
     let localConfig: any = configs;
     const key: Array<string> = keys.split('.');
 

@@ -9,77 +9,95 @@ import hpp from 'hpp';
 import core from './core';
 import mongo from 'connect-mongo';
 import helper from './helpers';
-import router from './api';
-
-// Express configuration
-const app = express();
-const { Language, Logger } = core;
-const { trans } = new Language(env('LANGUAGE'));
-const MongoStore = mongo(session);
-const sessionMongoStoreSetting = {
-  store: new MongoStore({
-    url: config('database.url'),
-    autoReconnect: true
-  })
-};
-global.trans = trans;
-
-// Set Helper
-const { ResponseStructure } = helper;
-const responseStructure = new ResponseStructure();
-global.responseStructure = responseStructure;
-
-app.set('port', env('PORT') || 3000);
-app.set('host', env('HOST') || 'localhost');
-app.use(compression());
-app.use(cors(config('cors')));
-app.use(helmet());
-app.use(hpp());
-app.use(bodyParser.urlencoded(config('bodyParser.urlencoded')));
-app.use(bodyParser.json(config('bodyParser.json')));
-app.use(session({
-  ...config('session'),
-  ...sessionMongoStoreSetting
-}));
-
-// Static file
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Logger
-const loggerClass = new Logger();
-config('logger.httpRequest.logs').forEach((value: any, index: number) => {
-  app.use(loggerClass.httpRequest(value));
-});
-
-// Rescructuring response object
-app.use((req: Request, res: any, next: NextFunction) => {
-  const send: any = res.send;
-
-  // Add response data to response object
-  res.send = (body: any) => {
-    res.resData = body;
-    res.send = send;
-    res.send(body);
-  };
-  next();
-});
-
-// Router
-app.use('/', router);
-
-// Error Handler
-app.use((req: Request, res: Response) => {
-  const response = responseStructure.error(trans('app.page.notFound'));
-  res.status(404).json(response);
-});
-
-app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
-  const response =
-    env('ENV') !== 'development'
-      ? responseStructure.error(trans('app.internalServerError'))
-      : responseStructure.error(err);
-  res.status(500).json(response);
-});
+import routers from './api';
 
 
-export default app;
+class App {
+  public app: any;
+
+  constructor () {
+    this.app = express();
+    this.main();
+  }
+
+  private main(): void {
+    // Configuration App
+    const { Language, Logger, Database } = core;
+    const { trans } = new Language(env('LANGUAGE'));
+    global.trans = trans;
+    
+    // Database
+    const { db } = new Database();
+    db();
+    const MongoStore = mongo(session);
+    const sessionMongoStoreSetting = {
+      store: new MongoStore({
+        url: config('database.url'),
+        autoReconnect: true
+      })
+    };
+    
+    // Set Helper
+    const { ResponseStructure } = helper;
+    const { success, error} = new ResponseStructure();
+    global.responseStructureSuccess = success;
+    global.responseStructureError = error;
+    
+    this.app.set('port', env('PORT') || 3000);
+    this.app.set('host', env('HOST') || 'localhost');
+    this.app.use(compression());
+    this.app.use(cors(config('cors')));
+    this.app.use(helmet());
+    this.app.use(hpp());
+    this.app.use(bodyParser.urlencoded(config('bodyParser.urlencoded')));
+    this.app.use(bodyParser.json(config('bodyParser.json')));
+    this.app.use(session({
+      ...config('session'),
+      ...sessionMongoStoreSetting
+    }));
+    
+    // Static file
+    this.app.use(express.static(path.join(__dirname, 'public')));
+    
+    // Logger
+    const loggerClass = new Logger();
+    global.logger = loggerClass.system();
+    config('logger.httpRequest.logs').forEach((value: log, index: number) => {
+      this.app.use(loggerClass.httpRequest(value));
+    });
+    
+    // Rescructuring response object
+    this.app.use((req: Request, res: any, next: NextFunction) => {
+      const send: any = res.send;
+    
+      // Add response data to response object
+      res.send = (body: any) => {
+        res.resData = body;
+        res.send = send;
+        res.send(body);
+      };
+      next();
+    });
+    
+    // Router
+    const router = routers[`v${env('VERSION')}`];
+    this.app.use(`/${env('ROUTE_PREFIX')}/v${env('VERSION')}`, router);
+    
+    // Error Handler
+    this.app.use((req: Request, res: Response) => {
+      const response = responseStructureError(trans('app.page.notFound'));
+      res.status(404).json(response);
+    });
+    
+    this.app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
+      const response =
+        env('ENV') !== 'development'
+          ? responseStructureError(trans('app.internalServerError'))
+          : responseStructureError(trans('app.internalServerError'), err);
+      res.status(500).json(response);
+    });
+  }
+}
+
+
+export default new App().app;

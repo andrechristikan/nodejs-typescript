@@ -1,16 +1,16 @@
 /** @type {import("../types/core")} */
 
 class ResponseStructure {
-  private defaultMessage: any
+  private defaultMessage: string
 
   constructor() {
     this.defaultMessage = trans('app.default.success');
   }
 
-  public success: any = (message: any, data: any = null) => {
+  public success = (message: string, data: any = null): response => {
 
     if (data !== null) {
-      const response: {status: number; message: string; data: any} = {
+      const response: {status: number; message: string; data?: any} = {
         status: 0,
         message: message || this.defaultMessage,
         data : data
@@ -19,7 +19,7 @@ class ResponseStructure {
 
     }
     
-    const response: {status: number; message: string} = {
+    const response: {status: number; message: string; data?: any} = {
       status: 0,
       message: message || this.defaultMessage,
     };
@@ -28,7 +28,7 @@ class ResponseStructure {
     return response;
   };
 
-  public error: any = (message: any, data: any  = null) => {
+  public error = (message: string, data: any  = null): response => {
     if (data !== null) {
       const response: {status: number; message: string; data: any} = {
         status: 1,

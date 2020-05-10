@@ -3,11 +3,13 @@ import cors from './cors';
 import database from './database';
 import session from './session';
 import logger from './logger';
+import auth from './auth';
 
 export default {
   bodyParser: bodyParser,
   cors,
   database,
   session,
-  logger
+  logger,
+  auth,
 };

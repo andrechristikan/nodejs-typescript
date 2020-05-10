@@ -8,7 +8,8 @@ export default {
   internalServerError: 'Internal Server Error',
   server: {
     running: `${env('NAME')} app is listening at http://${env('HOST')}:${env('PORT')}`,
-    env: 'Env in .env file '
+    env: 'Env in .env file',
+    exit: 'Press CTRL-C to stop'
   },
   db: {
     refuse: 'MongoDB connection error. Please make sure MongoDB is running. ',

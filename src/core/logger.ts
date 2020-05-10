@@ -21,7 +21,7 @@ class Logger {
     });
   }
 
-  public httpRequest: any = (log: any) => {
+  public httpRequest = (log: log): any => {
     // Setup The Logger
     const accessLogStream = createStream(
       `${log.name ? log.name+'-' : ''}${moment().format('YYYY-MM-DD')}.log`,
@@ -100,8 +100,4 @@ class Logger {
   }
 }
 
-
-// Logger
-const loggerClass = new Logger();
-global.logger = loggerClass.system();
 export default Logger;

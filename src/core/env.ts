@@ -8,7 +8,7 @@ class Env{
     dotenv.config();
   }
 
-  public env: any = (key: string) => {
+  public env = (key: string): string => {
     return process.env[key];
   }
 }
