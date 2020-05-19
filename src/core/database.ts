@@ -1,13 +1,11 @@
-import bluebird from 'bluebird';
 import mongoose from 'mongoose';
 
 class Database{
     
     public db = (): void =>{
-        mongoose.Promise = bluebird;
         mongoose.connect(config('database.url'), {
-            user: config('database.user'),
-            pass: config('database.password'),
+            // user: config('database.user'),
+            // pass: config('database.password'),
             poolSize: config('database.poolSize'),
             autoIndex: config('database.autoIndex'),
             serverSelectionTimeoutMS: config(

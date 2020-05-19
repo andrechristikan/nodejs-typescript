@@ -2,7 +2,7 @@ import User, { UserBaseInterface } from './UserModel';
 import { scopeUserExist, scopeUserExistIgnoreSpecific } from './UserScope';
 
 class UserService{
-    public getOneById: getOneUserByIdFunction = async (id: string): Promise<response> => {
+    public getOneByIdService: getOneUserByIdService = async (id: string): Promise<response> => {
         return new Promise( (resolve, reject) => {
             User.findById(id)
                 .exec((err, user: UserBaseInterface) => {
@@ -20,7 +20,7 @@ class UserService{
         });
     };
 
-    public getOne: getOneUserFunction = async (data: getOneUser): Promise<response> => {
+    public getOneService: getOneUserService = async (data: getOneUser): Promise<response> => {
         return new Promise( (resolve, reject) => {
             User.findOne(data)
                 .exec((err, user: UserBaseInterface) => {
@@ -38,7 +38,7 @@ class UserService{
         });
     };
 
-    public getAllExist: getAllUserExistFunction = async (data: getAllUserExist, id: string = null): Promise<response | responseList> => {
+    public getAllExistService: getAllUserExistService = async (data: getAllUserExist, id: string = null): Promise<response | responseList> => {
         const scope = id ? scopeUserExistIgnoreSpecific(data, id) : scopeUserExist(data) ;
         console.log(scope);
         const count: number = await User.countDocuments(scope);
@@ -56,7 +56,7 @@ class UserService{
         });
     };
 
-    public getAll: getAllUserFunction = async (data: getAllUser): Promise<response | responseList> => {
+    public getAllService: getAllUserService = async (data: getAllUser): Promise<response | responseList> => {
         const count: number = await User.countDocuments(data);
         return new Promise( (resolve, reject) => {
             User.find(data)
@@ -72,8 +72,8 @@ class UserService{
         });
     };
 
-    public store: storeUserFunction = async (data: storeUser): Promise<response> => {
-        const getAllUserExist: response| responseList = await this.getAllExist(data as getAllUserExist);
+    public storeService: storeUserService = async (data: storeUser): Promise<response> => {
+        const getAllUserExist: response| responseList = await this.getAllExistService(data as getAllUserExist);
         return new Promise( (resolve, reject) => {
             const userExist: responseList = getAllUserExist as responseList;
             if(userExist.status === 1){
@@ -97,9 +97,9 @@ class UserService{
         });
     };
 
-    public update: updateUserFunction = async (id: string, data: updateUser): Promise<response> => {
-        const user: response = await this.getOneById(id);
-        const getAllUserExist: response| responseList = await this.getAllExist(data as getAllUserExist, id);
+    public updateService: updateUserService = async (id: string, data: updateUser): Promise<response> => {
+        const user: response = await this.getOneByIdService(id);
+        const getAllUserExist: response| responseList = await this.getAllExistService(data as getAllUserExist, id);
 
         logger.info('zzz');
         return new Promise( (resolve, reject) => {
@@ -129,4 +129,4 @@ class UserService{
 
 
 
-export const {getAll, getOne, getAllExist, getOneById, store, update} = new UserService(); 
+export const {getAllService, getOneService, getAllExistService, getOneByIdService, storeService, updateService} = new UserService(); 

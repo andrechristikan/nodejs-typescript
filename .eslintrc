@@ -17,7 +17,8 @@
         "ignoreParameters": true
       }
     ],
-    "@typescript-eslint/no-unused-vars": "warn"
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/camelcase": "off"
   },
   "globals":{
     "responseStructure":"readonly",

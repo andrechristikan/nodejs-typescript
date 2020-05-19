@@ -24,9 +24,11 @@ if(model === 'replica'){
       : `${item}:${ports[index] || ports[0]}`;
   });
 
-  url = `mongodb://${url}/${name}?replicaSet=${replicaSetName}`;
+  // url = `mongodb://${url}/${name}?replicaSet=${replicaSetName}`;
+  url = `mongodb://${user}:${password}/${name}@${url}?replicaSet=${replicaSetName}`;
 }else{
-  url = `mongodb://${host}:${port}/${name}`;
+  // url = `mongodb://${host}:${port}/${name}`;
+  url = `mongodb://${user}:${password}@${host}:${port}/${name}`;
 }
 
 

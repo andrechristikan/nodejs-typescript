@@ -37,16 +37,16 @@ type getAllUser = {
     gender?: number;
 }
 
-type storeUserFunction = (data: storeUser) => Promise<response>;
+type storeUserService = (data: storeUser) => Promise<response>;
 
-type updateUserFunction = (id: string, data: updateUser) => Promise<response>;
+type updateUserService = (id: string, data: updateUser) => Promise<response>;
 
-type getOneUserFunction = (data: getOneUser) => Promise<response>;
+type getOneUserService = (data: getOneUser) => Promise<response>;
 
-type getAllUserExistFunction = (data: getAllUserExist, id?: string) => Promise<response>;
+type getAllUserExistService = (data: getAllUserExist, id?: string) => Promise<response>;
 
-type getOneUserByIdFunction = (id: string) => Promise<response>;
+type getOneUserByIdService = (id: string) => Promise<response>;
 
-type getAllUserFunction = (data: getAllUser) => Promise<response>;
+type getAllUserService = (data: getAllUser) => Promise<response>;
 
 type comparePasswordFunction = (candidatePassword: string, callback: (err: any, isMatch: any) => {}) => void;
