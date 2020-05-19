@@ -1,9 +1,9 @@
-import { getOneByIdService, getOneService, getAllService, storeService, updateService }  from './UserService';
+import { getOneUserByIdService, getOneUserService, getAllUserService, storeUserService, updateUserService }  from './UserService';
 import { Request, Response } from 'express';
 
 class UserController{
-    public getOneByIdController = async (req: Request, res: Response) => {
-        const user: Promise<response> = getOneByIdService(req.params.id);
+    public getOneUserByIdController = async (req: Request, res: Response) => {
+        const user: Promise<response> = getOneUserByIdService(req.params.id);
     
         user.then( (result) => {
             res.status(200);
@@ -14,9 +14,9 @@ class UserController{
         });
     };
 
-    public getOneController = async (req: Request, res: Response) => {
-        const data = req.query as getOneUser;
-        const user: Promise<responseList | response> = getOneService(data);
+    public getOneUserController = async (req: Request, res: Response) => {
+        const data: getOneUser = req.body as getOneUser;
+        const user: Promise<responseList | response> = getOneUserService(data);
     
         user.then( (result) => {
             res.status(200);
@@ -27,9 +27,9 @@ class UserController{
         });
     };
 
-    public getAllController = async (req: Request, res: Response) => {
-        const data = req.query as getAllUser;
-        const user: Promise<responseList | response> = getAllService(data);
+    public getAllUserController = async (req: Request, res: Response) => {
+        const data: getAllUser = req.body as getAllUser;
+        const user: Promise<responseList | response> = getAllUserService(data, parseInt(req.params.page), parseInt(req.params.limit));
     
         user.then( (result) => {
             res.status(200);
@@ -40,16 +40,9 @@ class UserController{
         });
     };
 
-    public storeController = async (req: Request, res: Response) => {
-        const data: storeUser = {
-            'firstName': req.body.firstName,
-            'lastName': req.body.lastName,
-            'email': req.body.email,
-            'userName': req.body.userName,
-            'password': req.body.password,
-            'gender': req.body.gender
-        };
-        const user: Promise<response> = storeService(data);
+    public storeUserController = async (req: Request, res: Response) => {
+        const data: storeUser = req.body as storeUser;
+        const user: Promise<response> = storeUserService(data);
 
         user.then( (result) => {
             res.status(200);
@@ -60,9 +53,9 @@ class UserController{
         });
     };
 
-    public updateController = async (req: Request, res: Response) => {
-        const data = req.body as updateUser;
-        const user: Promise<response> = updateService(req.params.id, data);
+    public updateUserController = async (req: Request, res: Response) => {
+        const data: updateUser = req.body as updateUser;
+        const user: Promise<response> = updateUserService(req.params.id, data);
         
         user.then( (result) => {
             res.status(200);
@@ -76,4 +69,4 @@ class UserController{
 }
 
 
-export const {getOneByIdController, getOneController, getAllController, storeController, updateController} = new UserController(); 
+export const {getOneUserByIdController, getOneUserController, getAllUserController, storeUserController, updateUserController} = new UserController(); 

@@ -20,6 +20,10 @@ class Database{
         }).catch( err => {
             logger.log({level:'info',message:`${trans('app.db.refuse')} ${err}`});
         });
+
+        if(env('ENV') === 'development'){
+            mongoose.set('debug', true);
+        }
     }
 }
 

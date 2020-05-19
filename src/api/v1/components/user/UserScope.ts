@@ -1,23 +1,52 @@
-import { Types } from 'mongoose'; 
 
-export const scopeUserExist = (data: getAllUserExist): object => {
-    return {
-        $or:[
-            {email: data.email},
-            {userName: data.userName}
-        ]
-    };
-};
+class UserScope{
+    public userExist = (query: any, mobileNumber?: string, email?: string): any => {
+        
+        if(mobileNumber){
+            query = query.where('mobileNumber').equals(mobileNumber);
+        }
 
-export const scopeUserExistIgnoreSpecific = (data: getAllUserExist, id: string): object => {
-    console.log( new Types.ObjectId('5eb99fdaf4a36738b522e56e'));
-    console.log( Types.ObjectId('578df3efb618f5141202a196') );
-    console.log( new Types.ObjectId('578df3efb618f5141202a196') );
-    return {
-        $or:[
-            {email: data.email},
-            {userName: data.userName}
-        ],
-        _id: {$ne: Types.ObjectId(id)}
+        if(email){
+            query = query.where('email').equals(email);
+        }
+        
+        return query;
+    }
+
+    public userExistIgnoreId = (query: any, id: string, mobileNumber?: string, email?: string): any => {
+
+        if(mobileNumber){
+            query = query.where('mobileNumber').equals(mobileNumber);
+        }
+
+        if(email){
+            query = query.where('email').equals(email);
+        }
+        
+        return query.where('_id').ne(id);
     };
-};
+
+    public userSearchList = (query: any, firstName?: string, lastName?: string, mobileNumber?: string, email?: string) => {
+        if(firstName){
+            query = query.where('name.first').equals(firstName);
+        }
+
+        if(lastName){
+            query = query.where('name.last').equals(lastName);
+        }
+
+        if(mobileNumber){
+            query = query.where('mobileNumber').equals(mobileNumber);
+        }
+
+        if(email){
+            query = query.where('email').equals(email);
+        }
+
+        
+        return query;
+    }
+}
+
+export const { userExist, userExistIgnoreId, userSearchList } = new UserScope();
+

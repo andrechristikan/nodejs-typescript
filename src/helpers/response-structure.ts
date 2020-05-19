@@ -1,4 +1,5 @@
 /** @type {import("../types/core")} */
+import  { getTotalPage } from "../helpers/ListHelper";
 
 class ResponseStructure {
   private defaultMessage: string
@@ -7,7 +8,7 @@ class ResponseStructure {
     this.defaultMessage = trans('app.default.success');
   }
 
-  public success = (message: string, data: any = null): response => {
+  public success = (message: string, data?: any): response => {
 
     if (data !== null) {
       const response: response = {
@@ -28,7 +29,7 @@ class ResponseStructure {
     return response;
   };
 
-  public error = (message: string, data: any  = null): response => {
+  public error = (message: string, data?: any ): response => {
     if (data !== null) {
       const response: response = {
         status: 1,
@@ -47,17 +48,13 @@ class ResponseStructure {
     return response;
   };
 
-  public list = (message: string, count: number, data: any): responseList => {
+  public list = (message: string, count: number, data: any, page?: number): responseList => {
 
-    const limit: number = config('up.limitList');
-    let totalPage = 0;
-    if(count > 0){
-      totalPage = Math.ceil(count/limit);
-    }
-    
+    const totalPage: number = getTotalPage(count);
     const response: responseList = {
       status: 0,
       message,
+      page,
       count,
       totalPage,
       data: data

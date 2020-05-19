@@ -1,8 +1,9 @@
 import User, { UserBaseInterface } from './UserModel';
-import { scopeUserExist, scopeUserExistIgnoreSpecific } from './UserScope';
+import { userExist, userExistIgnoreId, userSearchList } from './UserScope';
+import { getSkip, getLimit } from '../../../../helpers/ListHelper';
 
 class UserService{
-    public getOneByIdService: getOneUserByIdService = async (id: string): Promise<response> => {
+    public getOneUserByIdService: getOneUserByIdService = async (id: string): Promise<response> => {
         return new Promise( (resolve, reject) => {
             User.findById(id)
                 .exec((err, user: UserBaseInterface) => {
@@ -20,10 +21,11 @@ class UserService{
         });
     };
 
-    public getOneService: getOneUserService = async (data: getOneUser): Promise<response> => {
+    public getOneUserService: getOneUserService = async (data: getOneUser): Promise<response> => {
+        const userScope: any = userExist(User, data.mobileNumber, data.email);
         return new Promise( (resolve, reject) => {
-            User.findOne(data)
-                .exec((err, user: UserBaseInterface) => {
+            userScope.findOne()
+                .exec((err: any, user: UserBaseInterface) => {
                     if(err){ 
                         const response: response = responseStructureError(trans('app.internalServerError'));
                         reject(response); 
@@ -38,47 +40,51 @@ class UserService{
         });
     };
 
-    public getAllExistService: getAllUserExistService = async (data: getAllUserExist, id: string = null): Promise<response | responseList> => {
-        const scope = id ? scopeUserExistIgnoreSpecific(data, id) : scopeUserExist(data) ;
-        console.log(scope);
-        const count: number = await User.countDocuments(scope);
+    public getAllUserExistService: getAllUserExistService = async (data: getAllUserExist, id: string = null): Promise<response | responseList> => {
+        const userScope: any = id ? userExistIgnoreId(User, id, data.mobileNumber, data.email) : userExist(User, data.mobileNumber, data.email);
         return new Promise( (resolve, reject) => {
-            User.find(scope)
-                .exec((err, user: UserBaseInterface) => {
+            userScope.find()
+                .exec((err: any, user: UserBaseInterface) => {
                     if(err){ 
                         const response: response = responseStructureError(trans('app.internalServerError'));
                         reject(response); 
                     }
         
-                    const response: responseList = responseStructureList(trans('user.get.exist'), count, user);
+                    const response: response = responseStructureSuccess(trans('user.get.exist'), user);
                     resolve(response);
                 });
         });
     };
 
-    public getAllService: getAllUserService = async (data: getAllUser): Promise<response | responseList> => {
-        const count: number = await User.countDocuments(data);
+    public getAllUserService: getAllUserService = async (data: getAllUser, page: number, limit: number): Promise<response | responseList> => {
+        const userScope: any = userSearchList(User, data.name.first, data.name.last, data.mobileNumber, data.email);
+        const count: number = await userScope.countDocuments();
+        const skip: number = getSkip(page);
+        const dataOnPage: number = getLimit(limit);
         return new Promise( (resolve, reject) => {
-            User.find(data)
-                .exec((err, user: UserBaseInterface) => {
+            userScope.find()
+                .skip(skip)
+                .limit(dataOnPage)
+                .sort({ createdDate: -1 })
+                .exec((err: any, user: UserBaseInterface) => {
                     if(err){ 
                         const response: response = responseStructureError(trans('app.internalServerError'));
                         reject(response); 
                     }
                     
-                    const response: responseList = responseStructureList(trans('user.get.success'), count, user);
+                    const response: responseList = responseStructureList(trans('user.get.success'), count, user, page);
                     resolve(response);
                 });
         });
     };
 
-    public storeService: storeUserService = async (data: storeUser): Promise<response> => {
-        const getAllUserExist: response| responseList = await this.getAllExistService(data as getAllUserExist);
+    public storeUserService: storeUserService = async (data: storeUser): Promise<response> => {
+        const getAllUserExist: response| responseList = await this.getAllUserExistService(data as getAllUserExist);
         return new Promise( (resolve, reject) => {
             const userExist: responseList = getAllUserExist as responseList;
             if(userExist.status === 1){
                 reject(userExist);
-            }else if(userExist.count){
+            }else if(userExist.data.length){
                 const response: response = responseStructureError(trans('user.get.exist'));
                 reject(response);
             }else{
@@ -97,36 +103,37 @@ class UserService{
         });
     };
 
-    public updateService: updateUserService = async (id: string, data: updateUser): Promise<response> => {
-        const user: response = await this.getOneByIdService(id);
-        const getAllUserExist: response| responseList = await this.getAllExistService(data as getAllUserExist, id);
+    public updateUserService: updateUserService = async (id: string, data: updateUser): Promise<response> => {
+        // const user: response = await this.getOneUserByIdService(id);
+        const getAllUserExist: response| responseList = await this.getAllUserExistService(data as getAllUserExist, id);
 
         logger.info('zzz');
-        return new Promise( (resolve, reject) => {
-            const userExist: responseList = getAllUserExist as responseList;
-            logger.info('aaa');
-            if(user.status === 1){
-                logger.info('bbb');
-                reject(user);
-            }else if(userExist.status === 1){
-                logger.info('ccc');
-                reject(userExist);
-            }else if(userExist.count > 0){
-                logger.info('ddd');
-                const response: response = responseStructureError(trans('user.get.exist'));
-                reject(response);
-            }else{
-                logger.info('fff');
-                const modelUser: UserBaseInterface = user.data;
-                modelUser.update(data);
+        return getAllUserExist;
+        // return new Promise( (resolve, reject) => {
+        //     const userExist: responseList = getAllUserExist as responseList;
+        //     logger.info('aaa');
+        //     if(user.status === 1){
+        //         logger.info('bbb');
+        //         reject(user);
+        //     }else if(userExist.status === 1){
+        //         logger.info('ccc');
+        //         reject(userExist);
+        //     }else if(userExist.count > 0){
+        //         logger.info('ddd');
+        //         const response: response = responseStructureError(trans('user.get.exist'));
+        //         reject(response);
+        //     }else{
+        //         logger.info('fff');
+        //         const modelUser: UserBaseInterface = user.data;
+        //         modelUser.update(data);
 
-                const response: response = responseStructureSuccess(trans('user.update.success'), modelUser);
-                resolve(response);
-            }
-        });
+        //         const response: response = responseStructureSuccess(trans('user.update.success'), modelUser);
+        //         resolve(response);
+        //     }
+        // });
     };
 }
 
 
 
-export const {getAllService, getOneService, getAllExistService, getOneByIdService, storeService, updateService} = new UserService(); 
+export const {getAllUserService, getOneUserService, getAllUserExistService, getOneUserByIdService, storeUserService, updateUserService} = new UserService(); 

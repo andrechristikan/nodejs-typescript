@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import { getOneByIdController, getOneController, getAllController, storeController, updateController } from '../components/user/UserController';
+import { getOneUserByIdController, getOneUserController, getAllUserController, storeUserController, updateUserController } from '../components/user/UserController';
 
 const router: Router = Router();
-router.post('/store', storeController);
-router.put('/update/:id', updateController);
-router.get('/', getOneController);
-router.get('/all', getAllController);
-router.get('/:id', getOneByIdController);
+router.post('/store', storeUserController);
+router.put('/update/:id', updateUserController);
+router.post('/', getOneUserController);
+router.post('/all/:page/:limit', getAllUserController);
+router.get('/:id', getOneUserByIdController);
 
 export default router;

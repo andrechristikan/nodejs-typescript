@@ -1,40 +1,58 @@
 type storeUser = {
-    firstName: string;
-    lastName?: string;
-    userName: string;
-    email: string;
+    name: {
+        first: string;
+        last?: string;
+    };
+    mobileNumber: string;
     password: string;
-    gender: number;
+    email: string;
+
+    open_account_reason: string;
+    source_of_fund: string;
+    religion: string;
+    job_code: string;
+    address_rt_rw_perum: string;
+    home_phone_number: string;
+    office_phone_number: string;
+    fax_number: string;
 }
 
 type updateUser = {
-    firstName?: string;
-    lastName?: string;
-    userName?: string;
-    email?: string;
+    name?: {
+        first: string;
+        last: string;
+    };
+    mobileNumber?: string;
     password?: string;
-    gender?: number;
+    email?: string;
+
+    open_account_reason?: string;
+    source_of_fund?: string;
+    religion?: string;
+    job_code?: string;
+    address_rt_rw_perum?: string;
+    home_phone_number?: string;
+    office_phone_number?: string;
+    fax_number?: string;
 }
 
 type getOneUser = {
-    firstName?: string;
-    lastName?: string;
-    userName?: string;
+    mobileNumber?: string;
     email?: string;
-    gender?: number;
 }
 
 type getAllUserExist = {
-    userName: string;
-    email: string;
+    mobileNumber?: string;
+    email?: string;
 }
 
 type getAllUser = {
-    firstName?: string;
-    lastName?: string;
-    userName?: string;
+    name?: {
+        first: string;
+        last: string;
+    };
+    mobileNumber?: string;
     email?: string;
-    gender?: number;
 }
 
 type storeUserService = (data: storeUser) => Promise<response>;
@@ -47,6 +65,6 @@ type getAllUserExistService = (data: getAllUserExist, id?: string) => Promise<re
 
 type getOneUserByIdService = (id: string) => Promise<response>;
 
-type getAllUserService = (data: getAllUser) => Promise<response>;
+type getAllUserService = (data: getAllUser, page: number, limit: number) => Promise<response>;
 
 type comparePasswordFunction = (candidatePassword: string, callback: (err: any, isMatch: any) => {}) => void;

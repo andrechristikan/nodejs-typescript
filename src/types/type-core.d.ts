@@ -7,6 +7,7 @@ type response = {
 type responseList = {
     status: number,
     message: string,
+    page?: number,
     count: number,
     totalPage: number,
     data? : any
