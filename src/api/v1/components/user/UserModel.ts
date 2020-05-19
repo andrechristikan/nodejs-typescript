@@ -17,8 +17,6 @@ enum Gender {
   Male = 1,
 }
 
-type comparePasswordFunction = (candidatePassword: string, cb: (err: any, isMatch: any) => {}) => void;
-
 const userSchema = new Schema({
   firstName: {
     type: String,
@@ -54,9 +52,9 @@ const userSchema = new Schema({
 userSchema.pre<UserBaseInterface>('save', function save(next: NextFunction) {
   const user = this as UserDocument;
   if (!user.isModified('password')) { return next(); }
-  bcrypt.genSalt(config('auth.saltRounds'), (err: any, salt: string) =>{
+  bcrypt.genSalt(config('auth.saltRounds'), (err, salt: string) =>{
     if (err) { return next(err); }
-    bcrypt.hash(user.password, salt, async (err: any, hash: string) => {
+    bcrypt.hash(user.password, salt, async (err, hash: string) => {
       if (err) { return next(err); }
       user.password = hash;
       next();
@@ -86,9 +84,8 @@ const comparePassword: comparePasswordFunction = function (candidatePassword, ca
   });
 };
 
+
 userSchema.methods.comparePassword = comparePassword;
-
-
 
 // Default export
 export default model<UserBaseInterface>('users', userSchema);

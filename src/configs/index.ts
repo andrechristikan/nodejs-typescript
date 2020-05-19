@@ -4,6 +4,7 @@ import database from './database';
 import session from './session';
 import logger from './logger';
 import auth from './auth';
+import up from './up';
 
 export default {
   bodyParser: bodyParser,
@@ -12,4 +13,5 @@ export default {
   session,
   logger,
   auth,
+  up
 };

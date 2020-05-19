@@ -39,9 +39,10 @@ class App {
     
     // Set Helper
     const { ResponseStructure } = helper;
-    const { success, error} = new ResponseStructure();
+    const { success, error, list} = new ResponseStructure();
     global.responseStructureSuccess = success;
     global.responseStructureError = error;
+    global.responseStructureList = list;
     
     this.app.set('port', env('PORT') || 3000);
     this.app.set('host', env('HOST') || 'localhost');

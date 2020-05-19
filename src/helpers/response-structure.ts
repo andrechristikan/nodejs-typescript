@@ -10,7 +10,7 @@ class ResponseStructure {
   public success = (message: string, data: any = null): response => {
 
     if (data !== null) {
-      const response: {status: number; message: string; data?: any} = {
+      const response: response = {
         status: 0,
         message: message || this.defaultMessage,
         data : data
@@ -19,7 +19,7 @@ class ResponseStructure {
 
     }
     
-    const response: {status: number; message: string; data?: any} = {
+    const response: response = {
       status: 0,
       message: message || this.defaultMessage,
     };
@@ -30,7 +30,7 @@ class ResponseStructure {
 
   public error = (message: string, data: any  = null): response => {
     if (data !== null) {
-      const response: {status: number; message: string; data: any} = {
+      const response: response = {
         status: 1,
         message: message || this.defaultMessage,
         data : data
@@ -39,9 +39,28 @@ class ResponseStructure {
       
     }
 
-    const response: {status: number; message: string} = {
+    const response: response = {
       status: 1,
       message: message || this.defaultMessage,
+    };
+
+    return response;
+  };
+
+  public list = (message: string, count: number, data: any): responseList => {
+
+    const limit: number = config('up.limitList');
+    let totalPage = 0;
+    if(count > 0){
+      totalPage = Math.ceil(count/limit);
+    }
+    
+    const response: responseList = {
+      status: 0,
+      message,
+      count,
+      totalPage,
+      data: data
     };
 
     return response;

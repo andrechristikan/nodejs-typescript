@@ -4,6 +4,7 @@ declare global {
             config: Function
             responseStructureError: Function
             responseStructureSuccess: Function
+            responseStructureList: Function
             trans: Function
             env: Function,
             logger: any

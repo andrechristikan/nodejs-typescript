@@ -9,4 +9,6 @@ declare const logger: any;
 
 declare function responseStructureSuccess(message: string, data?: any): response;
 
+declare function responseStructureList(message: string, count: number, data: any): responseList;
+
 declare function responseStructureError(message: string, data?: any): response;

@@ -4,6 +4,14 @@ type response = {
     data? : any
 }
 
+type responseList = {
+    status: number,
+    message: string,
+    count: number,
+    totalPage: number,
+    data? : any
+}
+
 type log = {
     rules: {
         path: string,
