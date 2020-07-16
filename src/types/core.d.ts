@@ -7,8 +7,36 @@ declare function trans(key: string): string;
 
 declare const logger: any;
 
-declare function responseStructureSuccess(message: string, data?: any): response;
+declare function responseSuccess(message: string, data?: any): responseStructure;
 
-declare function responseStructureList(message: string, count: number, data: any, page?: number): responseList;
+declare function responseList(message: string, count: number, data: any, page?: number): responseListStructure;
 
-declare function responseStructureError(message: string, data?: any): response;
+declare function responseError(message: string, data?: any): responseStructure;
+
+type responseStructure = {
+    status: number,
+    message: string,
+    data? : any
+}
+
+type responseListStructure = {
+    status: number,
+    message: string,
+    page?: number,
+    count: number,
+    totalPage: number,
+    data? : any
+}
+
+type log = {
+    rules: {
+        path: string,
+        size: string,
+        maxSize: string,
+        compress: boolean,
+        interval: string,
+    },
+    name: string
+    routes: Array<string>,
+    includes: Array<string>,
+}

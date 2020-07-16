@@ -7,7 +7,7 @@ export default {
   },
   internalServerError: 'Internal Server Error',
   server: {
-    running: `${env('NAME')} app is listening at http://${env('HOST')}:${env('PORT')}`,
+    running: `App is listening at http://${env('HOST')}:${env('PORT')}`,
     env: 'Env in .env file',
     exit: 'Press CTRL-C to stop'
   },

@@ -1,8 +1,7 @@
-/** @type {import("../types/core")} */
 import languages from '../resources/language';
 
-class Languange {
-  private values: any;
+class Language {
+  private values: string;
 
   constructor(lang: string = 'en') {
     this.values = (languages as { [key: string]: any})[lang];
@@ -20,4 +19,4 @@ class Languange {
   };
 }
 
-export default Languange;
+export default Language;

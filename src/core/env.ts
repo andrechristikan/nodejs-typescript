@@ -1,6 +1,3 @@
-// @ts-check
-/** @type {import("../types/core")} */
-
 import dotenv from 'dotenv';
 
 class Env{

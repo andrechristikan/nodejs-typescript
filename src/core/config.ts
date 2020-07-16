@@ -1,8 +1,8 @@
-/** @type {import("../types/core")} */
 import configs from '../configs';
 
 class Config {
-  public config = (keys: string): any => {
+
+  public config = (keys: string): object | string | Array<string> => {
     let localConfig: any = configs;
     const key: Array<string> = keys.split('.');
 
@@ -10,7 +10,7 @@ class Config {
       localConfig = localConfig[key[i]];
     }
 
-    const result: any = localConfig;
+    const result: object | string | Array<string>= localConfig;
     return result;
   };
 }

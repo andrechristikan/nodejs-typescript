@@ -1,6 +1,6 @@
 import v1 from './v1/routes';
 
-const routers: any = {
+const routers: object = {
     v1
 };
 

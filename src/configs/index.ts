@@ -1,13 +1,13 @@
-import bodyParser from './body-parser';
-import cors from './cors';
-import database from './database';
-import session from './session';
-import logger from './logger';
-import auth from './auth';
-import up from './up';
+import bodyParser from './BodyParser';
+import cors from './Cors';
+import database from './Database';
+import session from './Session';
+import logger from './Logger';
+import auth from './Auth';
+import up from './Up';
 
 export default {
-  bodyParser: bodyParser,
+  bodyParser,
   cors,
   database,
   session,

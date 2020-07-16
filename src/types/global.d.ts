@@ -2,9 +2,9 @@ declare global {
     namespace NodeJS {
         interface Global {
             config: Function
-            responseStructureError: Function
-            responseStructureSuccess: Function
-            responseStructureList: Function
+            responseSuccess: Function
+            responseError: Function
+            responseList: Function
             trans: Function
             env: Function,
             logger: any

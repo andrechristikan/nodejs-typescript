@@ -55,16 +55,16 @@ type getAllUser = {
     email?: string;
 }
 
-type storeUserService = (data: storeUser) => Promise<response>;
+type storeUserService = (data: storeUser) => Promise<responseStructure>;
 
-type updateUserService = (id: string, data: updateUser) => Promise<response>;
+type updateUserService = (id: string, data: updateUser) => Promise<responseStructure>;
 
-type getOneUserService = (data: getOneUser) => Promise<response>;
+type getOneUserService = (data: getOneUser) => Promise<responseStructure>;
 
-type getAllUserExistService = (data: getAllUserExist, id?: string) => Promise<response>;
+type getAllUserExistService = (data: getAllUserExist, id?: string) => Promise<responseStructure>;
 
-type getOneUserByIdService = (id: string) => Promise<response>;
+type getOneUserByIdService = (id: string) => Promise<responseStructure>;
 
-type getAllUserService = (data: getAllUser, page: number, limit: number) => Promise<response>;
+type getAllUserService = (data: getAllUser, page: number, limit: number) => Promise<responseStructure>;
 
 type comparePasswordFunction = (candidatePassword: string, callback: (err: any, isMatch: any) => {}) => void;

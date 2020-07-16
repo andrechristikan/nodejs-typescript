@@ -2,17 +2,17 @@ import { createLogger, format, transports } from 'winston';
 import morgan from 'morgan';
 import { createStream } from 'rotating-file-stream';
 import moment from 'moment';
-import {Request, Response, NextFunction} from 'express';
+import {Request, Response} from 'express';
 import DailyRotateFile from 'winston-daily-rotate-file';
 
 
 class Logger {
   constructor() {
-    morgan.token('req-params', (req: Request, res: Response) => {
+    morgan.token('req-params', (req: Request) => {
       return JSON.stringify(req.params);
     });
 
-    morgan.token('req-body', (req: Request, res: Response) => {
+    morgan.token('req-body', (req: Request) => {
       return JSON.stringify(req.body);
     });
 
@@ -28,7 +28,7 @@ class Logger {
       log.rules
     );
 
-    const skip: any = (req: Request, res: Response, next: NextFunction) => {
+    const skip: any = (req: Request, res: Response) => {
       const url: string = req.originalUrl.replace(
         `/${env('ROUTE_PREFIX')}/v${env('VERSION')}`,
         ''

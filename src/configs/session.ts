@@ -1,7 +1,7 @@
 export default {
     resave: true,
     saveUninitialized: true,
-    secret: env('SESSION_KEY'),
-    name: env('NAME'),
-    maxAge: parseInt(env('SESSION_EXPIRED')) * 60 * 1000
+    secret: 'eA193jwTpwDs7GPxnKTeRzr4LJ6dpG6J5TEJpXW2',
+    name: 'sessionSecret',
+    maxAge: 60 * 60 * 1000 // 1 hour
 };

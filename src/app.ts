@@ -9,19 +9,21 @@ import hpp from 'hpp';
 import core from './core';
 import mongo from 'connect-mongo';
 import helper from './helpers';
-import routers from './api';
+// import routers from './app';
 
 
 class App {
+
   public app: any;
 
   constructor () {
-    this.app = express();
     this.main();
   }
 
   private main(): void {
+
     // Configuration App
+    this.app = express();
     const { Language, Logger, Database } = core;
     const { trans } = new Language(env('LANGUAGE'));
     global.trans = trans;
@@ -38,11 +40,11 @@ class App {
     };
     
     // Set Helper
-    const { ResponseStructure } = helper;
-    const { success, error, list} = new ResponseStructure();
-    global.responseStructureSuccess = success;
-    global.responseStructureError = error;
-    global.responseStructureList = list;
+    const { ResponseHelper } = helper;
+    const { success, error, list} = new ResponseHelper();
+    global.responseSuccess = success;
+    global.responseError = error;
+    global.responseList = list;
     
     this.app.set('port', env('PORT') || 3000);
     this.app.set('host', env('HOST') || 'localhost');
@@ -63,11 +65,11 @@ class App {
     // Logger
     const loggerClass = new Logger();
     global.logger = loggerClass.system();
-    config('logger.httpRequest.logs').forEach((value: log, index: number) => {
+    config('logger.httpRequest.logs').forEach((value: log) => {
       this.app.use(loggerClass.httpRequest(value));
     });
     
-    // Rescructuring response object
+    // Restructuring response object
     this.app.use((req: Request, res: any, next: NextFunction) => {
       const send: any = res.send;
     
@@ -81,24 +83,25 @@ class App {
     });
     
     // Router
-    const router = routers[`v${env('VERSION')}`];
-    this.app.use(`/${env('ROUTE_PREFIX')}/v${env('VERSION')}`, router);
+    // const router = routers[`v${env('VERSION')}`];
+    // console.log(router);
+    // this.app.use(`/${env('ROUTE_PREFIX')}/v${env('VERSION')}`, router);
     
     // Error Handler
     this.app.use((req: Request, res: Response) => {
-      const response = responseStructureError(trans('app.page.notFound'));
+      const response = responseError(trans('app.page.notFound'));
       res.status(404).json(response);
     });
     
-    this.app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
+    this.app.use((err: ErrorRequestHandler, req: Request, res: Response) => {
       const response =
         env('ENV') !== 'development'
-          ? responseStructureError(trans('app.internalServerError'))
-          : responseStructureError(trans('app.internalServerError'), err);
+          ? responseError(trans('app.internalServerError'))
+          : responseError(trans('app.internalServerError'), err);
       res.status(500).json(response);
     });
   }
 }
 
 
-export default new App().app;
+export default App;

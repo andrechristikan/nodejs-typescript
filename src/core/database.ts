@@ -4,8 +4,8 @@ class Database{
     
     public db = (): void =>{
         mongoose.connect(config('database.url'), {
-            // user: config('database.user'),
-            // pass: config('database.password'),
+            user: config('database.user'),
+            pass: config('database.password'),
             poolSize: config('database.poolSize'),
             autoIndex: config('database.autoIndex'),
             serverSelectionTimeoutMS: config(

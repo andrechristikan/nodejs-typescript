@@ -1,17 +1,16 @@
-/** @type {import("../types/core")} */
-import  { getTotalPage } from "../helpers/ListHelper";
+import  { getTotalPage } from './ListHelper';
 
-class ResponseStructure {
+class ResponseHelper {
   private defaultMessage: string
 
   constructor() {
     this.defaultMessage = trans('app.default.success');
   }
 
-  public success = (message: string, data?: any): response => {
+  public success = (message: string, data?: any): responseStructure => {
 
     if (data !== null) {
-      const response: response = {
+      const response: responseStructure = {
         status: 0,
         message: message || this.defaultMessage,
         data : data
@@ -20,7 +19,7 @@ class ResponseStructure {
 
     }
     
-    const response: response = {
+    const response: responseStructure = {
       status: 0,
       message: message || this.defaultMessage,
     };
@@ -29,9 +28,9 @@ class ResponseStructure {
     return response;
   };
 
-  public error = (message: string, data?: any ): response => {
+  public error = (message: string, data?: any ): responseStructure => {
     if (data !== null) {
-      const response: response = {
+      const response: responseStructure = {
         status: 1,
         message: message || this.defaultMessage,
         data : data
@@ -40,7 +39,7 @@ class ResponseStructure {
       
     }
 
-    const response: response = {
+    const response: responseStructure = {
       status: 1,
       message: message || this.defaultMessage,
     };
@@ -48,10 +47,10 @@ class ResponseStructure {
     return response;
   };
 
-  public list = (message: string, count: number, data: any, page?: number): responseList => {
+  public list = (message: string, count: number, data: any, page?: number): responseListStructure => {
 
     const totalPage: number = getTotalPage(count);
-    const response: responseList = {
+    const response: responseListStructure = {
       status: 0,
       message,
       page,
@@ -64,4 +63,4 @@ class ResponseStructure {
   };
 }
 
-export default ResponseStructure;
+export default ResponseHelper;

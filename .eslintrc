@@ -18,11 +18,12 @@
       }
     ],
     "@typescript-eslint/no-unused-vars": "warn",
-    "@typescript-eslint/camelcase": "off"
+    "@typescript-eslint/camelcase": "on"
   },
   "globals":{
-    "responseStructure":"readonly",
-    // "env":"writable",
+    "responseError":"readonly",
+    "responseList":"readonly",
+    "responseSuccess":"readonly",
     "env":"readonly",
     "config":"readonly",
     "trans":"readonly",

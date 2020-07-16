@@ -1,6 +1,6 @@
-import ResponseStructure from './response-structure';
+import ResponseHelper from './ResponseHelper';
 
 
 export default {
-  ResponseStructure,
+  ResponseHelper,
 };

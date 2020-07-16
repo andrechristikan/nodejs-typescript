@@ -1,10 +1,8 @@
-import Env from './env';
-import Config from './config';
-import Language from './language';
-import Database from './database';
-import Logger from './logger';
-
-
+import Env from './Env';
+import Config from './Config';
+import Language from './Language';
+import Database from './Database';
+import Logger from './Logger';
 
 export default {
   Env,
