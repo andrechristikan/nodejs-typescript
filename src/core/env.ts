@@ -1,15 +1,22 @@
 import dotenv from 'dotenv';
 
-class Env{
-  constructor(){
-    dotenv.config();
-  }
+class Env {
+    public env: any;
 
-  public env = (key: string): string => {
-    return process.env[key];
-  }
+    constructor() {
+        this.set();
+    }
+
+    private set = (): void => {
+        dotenv.config();
+        this.env = process.env;
+    };
+
+    public get = (key: string): string => {
+        return this.env[key];
+    };
 }
 
-const envClass = new Env();
-global.env = envClass.env;
-export default {};
+const configEnv = new Env();
+global.env = configEnv.get;
+export default configEnv.env;

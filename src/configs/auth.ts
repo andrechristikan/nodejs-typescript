@@ -1,3 +1,3 @@
 export default {
-    saltRounds: 10
+    saltRounds: 10,
 };

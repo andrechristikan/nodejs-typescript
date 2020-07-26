@@ -7,11 +7,11 @@ import auth from './Auth';
 import up from './Up';
 
 export default {
-  bodyParser,
-  cors,
-  database,
-  session,
-  logger,
-  auth,
-  up
+    bodyParser,
+    cors,
+    database,
+    session,
+    logger,
+    auth,
+    up,
 };

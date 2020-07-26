@@ -1,13 +1,13 @@
 export default {
-    'get':{
-        'success':'User found',
-        'notFound':'User not found',
-        'exist': 'User exist'
+    get: {
+        success: 'User found',
+        notFound: 'User not found',
+        exist: 'User exist',
     },
-    'create' : {
-        'success':'User success to create'
+    create: {
+        success: 'User success to create',
     },
-    'update':{
-        'success': 'User succes to update'
-    }
+    update: {
+        success: 'User success to update',
+    },
 };

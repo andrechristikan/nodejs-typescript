@@ -1,3 +1,3 @@
 export default {
-    limitList: 10
+    limitList: 10,
 };

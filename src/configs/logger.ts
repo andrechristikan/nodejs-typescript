@@ -1,6 +1,7 @@
 export default {
-    httpRequest:{
-        format: ':remote-addr - :remote-user [:date[iso]] - HTTP/:http-version [:status] ":method :url" - "Request Header :req[header]" - \'Request Params :req-params\' - \'Request Body :req-body\' - "Response Header :res[header]" - \'Response :res-data\'  - :response-time ms ":referrer" ":user-agent"',
+    request: {
+        format:
+            ':remote-addr - :remote-user [:date[iso]] - HTTP/:http-version [:status] ":method :url" - "Request Header :req[header]" - \'Request Params :req-params\' - \'Request Body :req-body\' - "Response Header :res[header]" - \'Response :res-data\'  - :response-time ms ":referrer" ":user-agent"',
         logs: [
             {
                 rules: {
@@ -10,13 +11,13 @@ export default {
                     compress: true,
                     interval: '1d',
                 },
-                name:'access',
+                name: 'access',
                 routes: ['*'],
                 includes: ['*'],
                 // routes: ["/user"],
                 // includes: [
-                //   "clientError", 
-                //   "serverError", 
+                //   "clientError",
+                //   "serverError",
                 //   "success"
                 // ],
             },
@@ -28,18 +29,15 @@ export default {
                     compress: true,
                     interval: '1d',
                 },
-                name:'error',
+                name: 'error',
                 routes: ['*'],
-                includes: [
-                    'clientError', 
-                    'serverError'
-                ],
+                includes: ['clientError', 'serverError'],
             },
         ],
     },
-    system:{
-        maxSize: '100m',
-        maxFiles: null,
-        name:'system',
-    }
+    system: {
+        maxSize: '200m',
+        maxFiles: '60d',
+        name: 'system',
+    },
 };

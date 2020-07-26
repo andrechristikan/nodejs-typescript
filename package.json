@@ -1,6 +1,6 @@
 {
-  "name": "collect-data",
-  "version": "0.1.0",
+  "name": "ac.k",
+  "version": "1.0.0",
   "private": true,
   "author": "Andre Christi Kan",
   "license": "MIT",
@@ -60,9 +60,10 @@
     "@typescript-eslint/parser": "^2.29.0",
     "concurrently": "^5.2.0",
     "eslint": "^6.8.0",
-    "install": "^0.13.0",
+    "eslint-config-prettier": "^6.11.0",
     "nodemon": "^2.0.3",
     "npm": "^6.14.4",
+    "prettier": "^2.0.5",
     "shelljs": "^0.8.4",
     "typescript": "^3.8.3"
   }

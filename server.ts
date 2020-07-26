@@ -1,23 +1,24 @@
 import App from './src/app';
 
-class Server{
+class Server {
     public server: App;
 
-    constructor(){
+    constructor() {
         this.main();
     }
 
     private main = (): void => {
+        this.run();
+    };
+
+    private run = (): void => {
         const appClass = new App();
         const app = appClass.app;
-        
         this.server = app.listen(app.get('port'), app.get('host'), () => {
-            logger.log({level:'info',message:trans('app.server.running')});
-            logger.log({level:'info',message:trans('app.server.env')});
-            logger.log({level:'info',message:trans('app.server.exit')});
+            logger.info(trans('app.server.running'));
+            logger.info(trans('app.server.exit'));
         });
-    }
-
+    };
 }
 
 const serverClass = new Server();

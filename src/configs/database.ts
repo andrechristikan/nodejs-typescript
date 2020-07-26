@@ -12,16 +12,16 @@ const useCreateIndex = true;
 const url = `mongodb://${host}/${name}`;
 
 export default {
-  url,
-  host,
-  name,
-  user,
-  password,
-  poolSize,
-  socketTimeoutMs,
-  serverSelectionTimeoutMs,
-  autoIndex,
-  useNewUrlParser,
-  useUnifiedTopology,
-  useCreateIndex,
+    url,
+    host,
+    name,
+    user,
+    password,
+    poolSize,
+    socketTimeoutMs,
+    serverSelectionTimeoutMs,
+    autoIndex,
+    useNewUrlParser,
+    useUnifiedTopology,
+    useCreateIndex,
 };
