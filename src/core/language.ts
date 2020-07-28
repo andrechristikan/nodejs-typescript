@@ -1,9 +1,13 @@
-import languages from '../resources/language';
+import languages from '../languages';
 
 class Language {
-    private languages: string;
+    private languages: object;
 
     constructor(lang: string = 'en') {
+        this.setLanguage(lang);
+    }
+
+    private setLanguage = (lang: string): void => {
         this.languages = (languages as { [key: string]: any })[lang];
     }
 

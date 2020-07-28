@@ -1,9 +1,4 @@
-import express, {
-    Request,
-    Response,
-    NextFunction,
-    ErrorRequestHandler,
-} from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import compression from 'compression';
 import session from 'express-session';
@@ -12,10 +7,9 @@ import helmet from 'helmet';
 import bodyParser from 'body-parser';
 import hpp from 'hpp';
 import mongo from 'connect-mongo';
-import helper from './helpers';
 import { request as requestLogger } from './core/Logger';
-
 import Core from './core';
+import { handler as ErrorHandler } from './errors/ErrorHandler';
 
 class App {
     public app: any;
@@ -87,21 +81,13 @@ class App {
         // console.log(router);
         // this.app.use(`/${env('ROUTE_PREFIX')}/v${env('VERSION')}`, router);
 
-        // Error Handler
-        // this.app.use((req: Request, res: Response) => {
-        //     const response = responseError(trans('app.page.notFound'));
-        //     res.status(404).json(response);
-        // });
+        // Error Handler Not Found
+        this.app.use((req: Request, res: Response, next: NextFunction) => {
+            console.log(trans('error.notFound'));
+            next(new APIError(1001));
+        });
 
-        // this.app.use(
-        //     (err: ErrorRequestHandler, req: Request, res: Response) => {
-        //         const response =
-        //             env('ENV') === 'production'
-        //                 ? responseError(trans('app.internalServerError'))
-        //                 : responseError(trans('app.internalServerError'), err);
-        //         res.status(500).json(response);
-        //     }
-        // );
+        this.app.use(ErrorHandler);
     }
 }
 

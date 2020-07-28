@@ -1,32 +1,20 @@
 /** Makes a string harder to read. */
+
 declare function env(key: string): string;
 
-declare function config(key: string): string | any;
+declare function config(key: string): any;
 
 declare function trans(key: string): string;
 
+declare function getVersion(): string;
+
+declare function getError(): string;
+
+declare class APIError {
+    constructor(code: number, description: string, data?: any);
+}
+
 declare const logger: any;
-
-declare function responseSuccess(message: string, data?: any): responseStructure;
-
-declare function responseList(message: string, count: number, data: any, page?: number): responseListStructure;
-
-declare function responseError(message: string, data?: any): responseStructure;
-
-type responseStructure = {
-    status: number,
-    message: string,
-    data? : any
-}
-
-type responseListStructure = {
-    status: number,
-    message: string,
-    page?: number,
-    count: number,
-    totalPage: number,
-    data? : any
-}
 
 type log = {
     rules: {
@@ -36,7 +24,7 @@ type log = {
         compress: boolean,
         interval: string,
     },
-    name: string
+    name: string,
     routes: Array<string>,
     includes: Array<string>,
-}
+};

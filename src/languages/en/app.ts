@@ -1,11 +1,7 @@
 export default {
-    page: {
-        notFound: 'Page not Found',
-    },
     default: {
         success: 'Default message.',
     },
-    internalServerError: 'Internal Server Error',
     server: {
         running: `App is listening at http://${env('HOST')}:${env('PORT')}`,
         exit: 'Press CTRL-C to stop',

@@ -3,6 +3,8 @@ import Config from './Config';
 import Language from './Language';
 import Database from './Database';
 import { system } from './Logger';
+import { getVersion } from './Version';
+import APIError from '../errors/ApiError';
 
 class Core {
     private env: any;
@@ -10,10 +12,12 @@ class Core {
 
     public run(): void {
         // Init Additional
+        this.setVersion();
         this.setLanguage();
         this.setLogger();
         this.setCore();
         this.setDatabase();
+        this.setError();
 
         // Running Core
         logger.info(trans('app.core.env'));
@@ -43,6 +47,14 @@ class Core {
     private setDatabase = (): void => {
         const databaseClass = new Database();
         databaseClass.create();
+    };
+
+    private setVersion = (): void => {
+        global.getVersion = getVersion;
+    };
+
+    private setError = (): void => {
+        global.APIError = APIError;
     };
 }
 

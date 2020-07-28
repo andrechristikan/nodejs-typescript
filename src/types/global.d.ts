@@ -1,15 +1,15 @@
+import APIError from '../errors/ApiError';
+
 declare global {
     namespace NodeJS {
         interface Global {
-            config: Function
-            responseSuccess: Function
-            responseError: Function
-            responseList: Function
-            trans: Function
+            config: Function,
+            trans: Function,
             env: Function,
-            logger: any
+            logger: any,
+            getVersion: Function,
+            getError: Function,
+            APIError: object,
         }
     }
 }
-
-export {};
