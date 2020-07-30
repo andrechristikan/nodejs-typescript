@@ -5,21 +5,23 @@ import Database from './Database';
 import { system } from './Logger';
 import { getVersion } from './Version';
 import APIError from '../errors/ApiError';
+import { HttpErrorStatusCode, SystemErrorCode } from '../errors/Enum';
 
 class Core {
     private env: any;
     private config: any;
 
     public run(): void {
-        // Init Additional
+        // ? Init Additional
         this.setVersion();
         this.setLanguage();
         this.setLogger();
         this.setCore();
         this.setDatabase();
+        this.setEnum();
         this.setError();
 
-        // Running Core
+        // ? Running Core
         logger.info(trans('app.core.env'));
         logger.info(trans('app.core.config'));
         logger.info(trans('app.core.running'));
@@ -39,7 +41,6 @@ class Core {
         global.trans = trans;
     };
 
-    // System Logger
     private setLogger = (): void => {
         global.logger = system();
     };
@@ -55,6 +56,13 @@ class Core {
 
     private setError = (): void => {
         global.APIError = APIError;
+    };
+
+    private setEnum = () => {
+        global.Enum = {
+            HttpErrorStatusCode,
+            SystemErrorCode,
+        };
     };
 }
 

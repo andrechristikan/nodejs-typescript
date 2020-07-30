@@ -7,7 +7,17 @@ class ErrorHandler {
         res: Response,
         next: NextFunction
     ) => {
-        res.status(500).json({ error: err });
+        const errorResponse = err as any;
+        const response: errorResponse = {
+            code: errorResponse.code,
+            message: errorResponse.info,
+        };
+
+        if (errorResponse.errors) {
+            response.errors = errorResponse.errors;
+        }
+
+        res.status(errorResponse.httpCode).json(response);
     };
 }
 

@@ -19,12 +19,12 @@ class App {
     }
 
     private main(): void {
-        // Configuration App
+        // ? Configuration App
         this.app = express();
         const coreClass = new Core();
         coreClass.run();
 
-        // DatabaseSession
+        // ? DatabaseSession
         const MongoStore = mongo(session);
         const sessionMongoStoreSetting = {
             store: new MongoStore({
@@ -48,15 +48,15 @@ class App {
             })
         );
 
-        // Static file
+        // ? Static file
         this.app.use(express.static(path.join(__dirname, 'public')));
 
-        // Request Logger
+        // ? Request Logger
         config('logger.request.logs').forEach((value: log) => {
             this.app.use(requestLogger(value));
         });
 
-        // Request Logger - Restructuring response
+        // ? Request Logger - Restructuring response
         this.app.use((req: Request, res: any, next: NextFunction) => {
             const send: any = res.send;
 
@@ -69,22 +69,21 @@ class App {
             next();
         });
 
-        // Set Helper
+        // ? Set Helper
         // const { ResponseHelper } = helper;
         // const { success, error, list } = new ResponseHelper();
         // global.responseSuccess = success;
         // global.responseError = error;
         // global.responseList = list;
 
-        // Router
+        // ? Router
         // const router = routers[`v${env('VERSION')}`];
         // console.log(router);
         // this.app.use(`/${env('ROUTE_PREFIX')}/v${env('VERSION')}`, router);
 
-        // Error Handler Not Found
+        // ? Error Handler Not Found
         this.app.use((req: Request, res: Response, next: NextFunction) => {
-            console.log(trans('error.notFound'));
-            next(new APIError(1001));
+            next(new APIError(Enum.SystemErrorCode.PAGE_NOT_FOUND));
         });
 
         this.app.use(ErrorHandler);

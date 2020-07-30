@@ -1,8 +1,7 @@
-
-class Version{
+class Version {
     public getVersion = (): string => {
         return `v${env('VERSION')}`;
-    }
+    };
 }
 
 export default Version;

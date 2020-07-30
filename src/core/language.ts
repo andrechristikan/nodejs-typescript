@@ -9,7 +9,7 @@ class Language {
 
     private setLanguage = (lang: string): void => {
         this.languages = (languages as { [key: string]: any })[lang];
-    }
+    };
 
     public trans = (keys: string): string => {
         let localLang: any = this.languages;

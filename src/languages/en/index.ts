@@ -5,5 +5,5 @@ import error from './error';
 export default {
     app,
     user,
-    error
+    error,
 };
