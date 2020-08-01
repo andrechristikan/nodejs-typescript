@@ -69,13 +69,6 @@ class App {
             next();
         });
 
-        // ? Set Helper
-        // const { ResponseHelper } = helper;
-        // const { success, error, list } = new ResponseHelper();
-        // global.responseSuccess = success;
-        // global.responseError = error;
-        // global.responseList = list;
-
         // ? Router
         // const router = routers[`v${env('VERSION')}`];
         // console.log(router);

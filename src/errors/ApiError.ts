@@ -1,4 +1,4 @@
-import { SystemErrorCode, HttpErrorStatusCode } from './Enum';
+import { SystemErrorCode, HttpErrorStatusCode } from '../core/Enum';
 
 class APIError extends Error {
     public readonly code: SystemErrorCode;

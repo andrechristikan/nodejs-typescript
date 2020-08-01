@@ -16,6 +16,10 @@ declare class APIError {
     constructor(code: number, data?: any);
 }
 
+declare class APIResponse {
+    constructor(code: number, message: string, data?: any, count?: number, page?: number);
+}
+
 declare const logger: any;
 
 type Enum = {
@@ -42,12 +46,24 @@ type Enum = {
         GENERAL_ERROR: number;
         PAGE_NOT_FOUND: number;
     };
+    HttpSuccessStatusCode: {
+        OK: number;
+        CREATED: number;
+    };
 };
 
 type errorResponse = {
     code: number;
     message: string;
     errors?: object;
+};
+
+type successResponse = {
+    code: number;
+    message: string;
+    count?: number;
+    page?: number;
+    data?: any;
 };
 
 type log = {

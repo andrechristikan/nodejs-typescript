@@ -22,8 +22,13 @@ export enum SystemErrorCode {
     INVALID_PASSWORD = 1003,
 
     // ? System
-    PAGE_NOT_FOUND = 5000,
+    PAGE_NOT_FOUND = 5001,
 
     // ? General
     GENERAL_ERROR = 10000,
+}
+
+export enum HttpSuccessStatusCode {
+    OK = 200,
+    CREATED = 201,
 }

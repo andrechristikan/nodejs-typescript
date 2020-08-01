@@ -12,7 +12,9 @@ declare global {
             Enum: {
                 HttpErrorStatusCode: object;
                 SystemErrorCode: object;
+                HttpSuccessStatusCode: object;
             };
+            APIResponse: Object;
         }
     }
 }
