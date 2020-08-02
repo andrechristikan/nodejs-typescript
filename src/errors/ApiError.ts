@@ -32,36 +32,36 @@ class APIError extends Error {
             case Enum.SystemErrorCode.INVALID_EMAIL:
                 return {
                     httpCode: Enum.HttpErrorStatusCode.BAD_REQUEST,
-                    message: trans('error.badRequest'),
+                    message: language('_core.error.badRequest'),
                 };
             case Enum.SystemErrorCode.USER_NOT_FOUND:
                 return {
                     httpCode: Enum.HttpErrorStatusCode.BAD_REQUEST,
-                    message: trans('error.badRequest'),
+                    message: language('_core.error.badRequest'),
                 };
             case Enum.SystemErrorCode.INVALID_PASSWORD:
                 return {
                     httpCode: Enum.HttpErrorStatusCode.BAD_REQUEST,
-                    message: trans('error.badRequest'),
+                    message: language('_core.error.badRequest'),
                 };
 
             // ! System Error
             case Enum.SystemErrorCode.PAGE_NOT_FOUND:
                 return {
                     httpCode: Enum.HttpErrorStatusCode.NOT_FOUND,
-                    message: trans('error.notFound'),
+                    message: language('_core.error.notFound'),
                 };
 
             // ! General Error
             case Enum.SystemErrorCode.GENERAL_ERROR:
                 return {
                     httpCode: Enum.HttpErrorStatusCode.INTERNAL_SERVER_ERROR,
-                    message: trans('error.internalServerError'),
+                    message: language('_core.error.internalServerError'),
                 };
             default:
                 return {
                     httpCode: Enum.HttpErrorStatusCode.INTERNAL_SERVER_ERROR,
-                    message: trans('error.internalServerError'),
+                    message: language('_core.error.internalServerError'),
                 };
         }
     };

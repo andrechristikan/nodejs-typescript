@@ -21,13 +21,13 @@ class Database {
             .then(() => {
                 logger.log({
                     level: 'info',
-                    message: trans('app.db.connected'),
+                    message: language('_core.app.db.connected'),
                 });
             })
             .catch((err) => {
                 logger.log({
                     level: 'info',
-                    message: `${trans('app.db.refuse')} ${err}`,
+                    message: `${language('_core.app.db.refuse')} ${err}`,
                 });
             });
 

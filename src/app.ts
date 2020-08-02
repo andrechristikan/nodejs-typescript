@@ -10,6 +10,8 @@ import mongo from 'connect-mongo';
 import { request as requestLogger } from './core/Logger';
 import Core from './core';
 import { handler as ErrorHandler } from './errors/ErrorHandler';
+import Versioning from './api';
+import Route from './core/Route';
 
 class App {
     public app: any;
@@ -21,7 +23,8 @@ class App {
     private main(): void {
         // ? Configuration App
         this.app = express();
-        const coreClass = new Core();
+        const languageList: languages = Versioning[`v${env('VERSION')}`].languages;
+        const coreClass = new Core(languageList[env('LANGUAGE')]);
         coreClass.run();
 
         // ? DatabaseSession
@@ -70,9 +73,11 @@ class App {
         });
 
         // ? Router
-        // const router = routers[`v${env('VERSION')}`];
-        // console.log(router);
-        // this.app.use(`/${env('ROUTE_PREFIX')}/v${env('VERSION')}`, router);
+        const routeList = Versioning[`v${env('VERSION')}`].router;
+        const middlewareList = Versioning[`v${env('VERSION')}`].middleware;
+        const controllerList = Versioning[`v${env('VERSION')}`].controllers;
+        const routeClass = new Route(this.app, routeList, controllerList, middlewareList);
+        routeClass.create();
 
         // ? Error Handler Not Found
         this.app.use((req: Request, res: Response, next: NextFunction) => {

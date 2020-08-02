@@ -15,8 +15,8 @@ class Server {
         const appClass = new App();
         const app = appClass.app;
         this.server = app.listen(app.get('port'), app.get('host'), () => {
-            logger.info(trans('app.server.running'));
-            logger.info(trans('app.server.exit'));
+            logger.info(language('_core.app.server.running'));
+            logger.info(language('_core.app.server.exit'));
         });
     };
 }

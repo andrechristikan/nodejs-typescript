@@ -14,7 +14,7 @@
             "*": [
                 "node_modules/*",
                 "src/types/*",
-                "src/api/v1/components/types/*"
+                "src/api/v1/types/*"
             ]
         }
     },

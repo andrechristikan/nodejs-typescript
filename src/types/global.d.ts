@@ -3,7 +3,7 @@ declare global {
     namespace NodeJS {
         interface Global {
             config: Function;
-            trans: Function;
+            language: Function;
             env: Function;
             logger: any;
             getVersion: Function;

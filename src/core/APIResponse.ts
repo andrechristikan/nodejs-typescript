@@ -1,6 +1,8 @@
 import { HttpSuccessStatusCode } from './Enum';
 
 class APIResponse {
+    public code: HttpSuccessStatusCode;
+
     constructor(
         code: HttpSuccessStatusCode,
         message: string,
@@ -8,6 +10,7 @@ class APIResponse {
         count?: number,
         page?: number
     ) {
+        this.code = code;
         const defaultPage: number = page;
         const defaultCount: number = count;
         const response: successResponse = {

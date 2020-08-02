@@ -15,6 +15,11 @@ import {
 class Core {
     private env: any;
     private config: any;
+    private languages: object;
+
+    constructor(languages: object) {
+        this.languages = languages;
+    }
 
     public run(): void {
         // ? Init Additional
@@ -28,9 +33,9 @@ class Core {
         this.setResponse();
 
         // ? Running Core
-        logger.info(trans('app.core.env'));
-        logger.info(trans('app.core.config'));
-        logger.info(trans('app.core.running'));
+        logger.info(language('_core.app.core.env'));
+        logger.info(language('_core.app.core.config'));
+        logger.info(language('_core.app.core.running'));
         if (env('ENV') === 'production') {
             logger.info(this.env);
             logger.info(this.config);
@@ -43,8 +48,10 @@ class Core {
     };
 
     private setLanguage = (): void => {
-        const { trans } = new Language(env('LANGUAGE'));
-        global.trans = trans;
+        const languageClass = new Language();
+        languageClass.setLanguage(this.languages);
+        const { language } = languageClass;
+        global.language = language;
     };
 
     private setLogger = (): void => {

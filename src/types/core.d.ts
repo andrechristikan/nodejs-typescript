@@ -4,7 +4,7 @@ declare function env(key: string): string;
 
 declare function config(key: string): any;
 
-declare function trans(key: string): string;
+declare function language(key: string): string;
 
 declare function getVersion(): string;
 
@@ -17,7 +17,14 @@ declare class APIError {
 }
 
 declare class APIResponse {
-    constructor(code: number, message: string, data?: any, count?: number, page?: number);
+    public code: number;
+    constructor(
+        code: number,
+        message: string,
+        data?: any,
+        count?: number,
+        page?: number
+    );
 }
 
 declare const logger: any;
@@ -78,3 +85,31 @@ type log = {
     routes: Array<string>;
     includes: Array<string>;
 };
+
+type defaultRoute = {
+    prefix: string;
+    routes?: baseRoute[];
+    middleware?: string;
+};
+
+type baseRoute = {
+    controller: string;
+    url: string;
+    method: string;
+    middleware?: string;
+};
+
+type baseVersioning = {
+    router: defaultRoute[];
+    middleware: any;
+    controllers: any;
+    languages: object;
+};
+
+type versioning = {
+    [key: string]: baseVersioning
+}
+
+type languages = {
+    [key: string]: any
+}

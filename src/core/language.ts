@@ -1,17 +1,27 @@
-import languages from '../languages';
+import app from './languages/app';
+import error from './languages/error';
 
 class Language {
     private languages: object;
 
-    constructor(lang: string = 'en') {
-        this.setLanguage(lang);
+    constructor() {
+        this.languages = {
+            _core : {
+                app,
+                error
+            }
+        };
     }
 
-    private setLanguage = (lang: string): void => {
-        this.languages = (languages as { [key: string]: any })[lang];
+    public setLanguage = (languages: object): void => {
+        this.languages = {
+            ...this.languages,
+            ...languages
+        };
+
     };
 
-    public trans = (keys: string): string => {
+    public language = (keys: string): string => {
         let localLang: any = this.languages;
         const key: Array<string> = keys.split('.');
 
