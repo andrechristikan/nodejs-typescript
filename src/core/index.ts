@@ -4,21 +4,19 @@ import Language from './Language';
 import Database from './Database';
 import { system } from './Logger';
 import { getVersion } from './Version';
-import APIError from '../errors/ApiError';
-import APIResponse from './APIResponse';
-import {
-    HttpErrorStatusCode,
-    SystemErrorCode,
-    HttpSuccessStatusCode,
-} from './Enum';
-
+import APIResponse from './response/APIResponse';
+import { HttpErrorStatusCode } from './errors/Enum';
+import { HttpSuccessStatusCode } from './response/Enum';
 class Core {
     private env: any;
     private config: any;
+    private errors: any;
     private languages: object;
+    private enum: Enum;
 
-    constructor(languages: object) {
+    constructor(languages: object, errors: any) {
         this.languages = languages;
+        this.errors = errors;
     }
 
     public run(): void {
@@ -68,7 +66,7 @@ class Core {
     };
 
     private setError = (): void => {
-        global.APIError = APIError;
+        global.APIError = this.errors.APIError;
     };
 
     private setResponse = (): void => {
@@ -76,11 +74,13 @@ class Core {
     };
 
     private setEnum = () => {
-        global.Enum = {
+        this.enum = {
+            SystemErrorCode: this.errors.enum.SystemErrorCode,
             HttpErrorStatusCode,
-            SystemErrorCode,
-            HttpSuccessStatusCode,
-        };
+            HttpSuccessStatusCode
+        }
+
+        global.Enum = this.enum;
     };
 }
 

@@ -9,7 +9,7 @@ import hpp from 'hpp';
 import mongo from 'connect-mongo';
 import { request as requestLogger } from './core/Logger';
 import Core from './core';
-import { handler as ErrorHandler } from './errors/ErrorHandler';
+import { handler as ErrorHandler } from './core/errors/ErrorHandler';
 import Versioning from './api';
 import Route from './core/Route';
 
@@ -24,7 +24,8 @@ class App {
         // ? Configuration App
         this.app = express();
         const languageList: languages = Versioning[`v${env('VERSION')}`].languages;
-        const coreClass = new Core(languageList[env('LANGUAGE')]);
+        const ErrorList: languages = Versioning[`v${env('VERSION')}`].errors;
+        const coreClass = new Core(languageList[env('LANGUAGE')], ErrorList);
         coreClass.run();
 
         // ? DatabaseSession
@@ -83,6 +84,7 @@ class App {
         this.app.use((req: Request, res: Response, next: NextFunction) => {
             next(new APIError(Enum.SystemErrorCode.PAGE_NOT_FOUND));
         });
+        
 
         this.app.use(ErrorHandler);
     }

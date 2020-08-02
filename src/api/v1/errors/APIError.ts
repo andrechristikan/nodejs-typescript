@@ -1,14 +1,15 @@
-import { SystemErrorCode, HttpErrorStatusCode } from '../core/Enum';
+import { SystemErrorCode } from './Enum';
+import { HttpErrorStatusCode } from '../../../core/errors/Enum';
 
 class APIError extends Error {
     public readonly code: SystemErrorCode;
     public readonly httpCode: HttpErrorStatusCode;
     public readonly info: string;
-    public readonly errors: any;
+    public readonly errors: object | Array<object>;
 
     constructor(
         code: SystemErrorCode = Enum.SystemErrorCode.GENERAL_ERROR,
-        errors: any = null
+        errors: object | Array<object> = null
     ) {
         super(`${code}`);
 

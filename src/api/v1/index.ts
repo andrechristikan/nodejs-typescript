@@ -1,20 +1,62 @@
 import router from './routes/router';
 import languages from './languages';
 import TestController from './test/TestController';
+import APIError from './errors/APIError';
+import { SystemErrorCode } from './errors/Enum';
 
-const middleware = {
+class Version1 {
+    private middleware: any;
+    private errors: any;
+    private router: defaultRoute[];
+    private controllers: any;
+    private languages: object;
 
+    constructor() {
+        this.setMiddleware();
+        this.setErrors();
+        this.setRouter();
+        this.setControllers();
+        this.setLanguages();
+    }
+
+    public get() {
+        const setVersion: baseVersioning = {
+            router: this.router,
+            middleware: this.middleware,
+            controllers: this.controllers,
+            languages: this.languages,
+            errors: this.errors,
+        }
+        return setVersion;
+    }
+
+    private setMiddleware = () => {
+        this.middleware = {
+            
+        };
+    };
+
+    private setErrors = () => {
+        this.errors = {
+            APIError,
+            enum: {
+                SystemErrorCode,
+            },
+        };
+    };
+
+    private setRouter = () => {
+        this.router = router;
+    };
+
+    private setControllers = () => {
+        this.controllers = {
+            TestController,
+        };
+    };
+
+    private setLanguages = () => {
+        this.languages = languages;
+    };
 }
-
-const controllers = {
-    TestController
-}
-
-const versioning: baseVersioning = {
-    router,
-    middleware,
-    controllers,
-    languages
-}
-
-export default versioning
+export default Version1;

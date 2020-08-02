@@ -16,7 +16,7 @@ class ErrorHandler {
         if (errorResponse.errors) {
             response.errors = errorResponse.errors;
         }
-        console.log("errorResponse", errorResponse);
+        
         res.status(errorResponse.httpCode).json(response);
     };
 }

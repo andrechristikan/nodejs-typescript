@@ -1,4 +1,9 @@
-import configs from '../configs';
+import bodyParser from '../configs/BodyParser';
+import cors from '../configs/Cors';
+import database from '../configs/Database';
+import session from '../configs/Session';
+import logger from '../configs/Logger';
+import auth from '../configs/Auth';
 
 class Config {
     public configs: object | string;
@@ -8,7 +13,14 @@ class Config {
     }
 
     private set(): void {
-        this.configs = configs;
+        this.configs = {
+            bodyParser,
+            cors,
+            database,
+            session,
+            logger,
+            auth
+        };
     }
 
     public get = (keys: string): object | string | Array<string> => {

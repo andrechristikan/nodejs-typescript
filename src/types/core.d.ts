@@ -46,17 +46,11 @@ type Enum = {
         BAD_GATEWAY: number;
         SERVICE_UNAVAILABLE: number;
     };
-    SystemErrorCode: {
-        INVALID_EMAIL: number;
-        USER_NOT_FOUND: number;
-        INVALID_PASSWORD: number;
-        GENERAL_ERROR: number;
-        PAGE_NOT_FOUND: number;
-    };
     HttpSuccessStatusCode: {
         OK: number;
         CREATED: number;
     };
+    SystemErrorCode: any;
 };
 
 type errorResponse = {
@@ -104,12 +98,13 @@ type baseVersioning = {
     middleware: any;
     controllers: any;
     languages: object;
+    errors: any;
 };
 
 type versioning = {
-    [key: string]: baseVersioning
-}
+    [key: string]: baseVersioning;
+};
 
 type languages = {
-    [key: string]: any
-}
+    [key: string]: any;
+};
