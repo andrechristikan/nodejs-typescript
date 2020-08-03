@@ -13,7 +13,16 @@ declare function getError(): string;
 declare const Enum: Enum;
 
 declare class APIError {
-    constructor(code: number, data?: any);
+    constructor(code: number, errors?: object | Array<object>);
+}
+
+declare class BaseError {
+    constructor(
+        code: number,
+        httpCode: number,
+        info: string,
+        errors?: object | Array<object>
+    );
 }
 
 declare class APIResponse {

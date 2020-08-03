@@ -9,6 +9,7 @@ declare global {
             getVersion: Function;
             getError: Function;
             APIError: Object;
+            BaseError: Object;
             Enum: {
                 HttpErrorStatusCode: object;
                 SystemErrorCode: object;

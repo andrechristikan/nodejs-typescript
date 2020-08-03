@@ -6,6 +6,7 @@ import { system } from './Logger';
 import { getVersion } from './Version';
 import APIResponse from './response/APIResponse';
 import { HttpErrorStatusCode } from './errors/Enum';
+import BaseError from './errors/BaseError';
 import { HttpSuccessStatusCode } from './response/Enum';
 class Core {
     private env: any;
@@ -67,6 +68,7 @@ class Core {
 
     private setError = (): void => {
         global.APIError = this.errors.APIError;
+        global.BaseError = BaseError;
     };
 
     private setResponse = (): void => {
