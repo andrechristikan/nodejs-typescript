@@ -25,15 +25,19 @@ class Route {
         this.routes.forEach((value: defaultRoute) => {
             if (value.middleware) {
                 const middleware = value.middleware.split('@');
-                const classMiddleware = new this.middleware[middleware[0]];
+                const classMiddleware = new this.middleware[middleware[0]]();
                 router.use(value.prefix, classMiddleware[middleware[1]]);
             } else {
                 value.routes.forEach((route: baseRoute) => {
                     const controller = route.controller.split('@');
-                    const classController = new this.controllers[controller[0]];
+                    const classController = new this.controllers[
+                        controller[0]
+                    ]();
                     if (route.middleware) {
                         const middleware = value.middleware.split('@');
-                        const classMiddleware = new this.middleware[middleware[0]];
+                        const classMiddleware = new this.middleware[
+                            middleware[0]
+                        ]();
                         router[route.method](
                             `${value.prefix}${route.url}`,
                             classMiddleware[middleware[1]],

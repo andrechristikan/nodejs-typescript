@@ -3,6 +3,8 @@ import languages from './languages';
 import TestController from './test/TestController';
 import APIError from './errors/APIError';
 import { SystemErrorCode } from './errors/Enum';
+import AuthMiddleware from './auth/AuthMiddleware';
+import AuthController from './auth/AuthController';
 
 class Version1 {
     private middleware: any;
@@ -26,13 +28,13 @@ class Version1 {
             controllers: this.controllers,
             languages: this.languages,
             errors: this.errors,
-        }
+        };
         return setVersion;
     }
 
     private setMiddleware = () => {
         this.middleware = {
-            
+            AuthMiddleware
         };
     };
 
@@ -52,6 +54,7 @@ class Version1 {
     private setControllers = () => {
         this.controllers = {
             TestController,
+            AuthController
         };
     };
 

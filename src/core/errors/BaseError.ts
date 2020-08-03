@@ -1,4 +1,3 @@
-
 import { HttpErrorStatusCode } from './Enum';
 
 class BaseError extends Error {

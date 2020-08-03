@@ -19,7 +19,7 @@ class Config {
             database,
             session,
             logger,
-            auth
+            auth,
         };
     }
 

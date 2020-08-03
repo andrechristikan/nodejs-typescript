@@ -6,19 +6,18 @@ class Language {
 
     constructor() {
         this.languages = {
-            _core : {
+            _core: {
                 app,
-                error
-            }
+                error,
+            },
         };
     }
 
     public setLanguage = (languages: object): void => {
         this.languages = {
             ...this.languages,
-            ...languages
+            ...languages,
         };
-
     };
 
     public language = (keys: string): string => {

@@ -1,5 +1,6 @@
 export default {
     get: {
-        ok: 'test ok'
-    }
-}
+        ok: 'test ok',
+        auth: 'auth ok'
+    },
+};

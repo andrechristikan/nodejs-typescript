@@ -1,29 +1,28 @@
 const routers: defaultRoute[] = [
-    // {
-    //     prefix: '/',
-    //     middleware: 'aa',
-    // },
-    // {
-    //     prefix: '/user',
-    //     middleware: 'bb',
-    // },
-    // {
-    //     prefix: '/user',
-    //     routes: [
-    //         {
-    //             controller: 'UserController@list',
-    //             url: '/',
-    //             method: 'get',
-    //             middleware: '',
-    //         },
-    //         {
-    //             controller: 'UserController@get',
-    //             url: '/:id',
-    //             method: 'get',
-    //             middleware: '',
-    //         },
-    //     ],
-    // },
+    {
+        prefix: '/',
+        routes: [
+            {
+                controller: 'TestController@index',
+                url: '/',
+                method: 'get',
+            },
+        ],
+    },
+    {
+        prefix: '/login',
+        routes: [
+            {
+                controller: 'AuthController@login',
+                url: '/',
+                method: 'post',
+            },
+        ],
+    },
+    {
+        prefix: '/test',
+        middleware: 'AuthMiddleware@isAuthenticated',
+    },
     {
         prefix: '/test',
         routes: [
@@ -31,9 +30,9 @@ const routers: defaultRoute[] = [
                 controller: 'TestController@test',
                 url: '/',
                 method: 'get',
-            }
+            },
         ],
-    }
+    },
 ];
 
 export default routers;

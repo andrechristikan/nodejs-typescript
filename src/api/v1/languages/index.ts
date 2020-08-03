@@ -1,7 +1,7 @@
 import en from './en';
 
 const languages: languages = {
-    en
-}
+    en,
+};
 
-export default languages
+export default languages;

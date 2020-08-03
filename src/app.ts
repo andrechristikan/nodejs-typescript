@@ -23,7 +23,8 @@ class App {
     private main(): void {
         // ? Configuration App
         this.app = express();
-        const languageList: languages = Versioning[`v${env('VERSION')}`].languages;
+        const languageList: languages =
+            Versioning[`v${env('VERSION')}`].languages;
         const ErrorList: languages = Versioning[`v${env('VERSION')}`].errors;
         const coreClass = new Core(languageList[env('LANGUAGE')], ErrorList);
         coreClass.run();
@@ -77,14 +78,18 @@ class App {
         const routeList = Versioning[`v${env('VERSION')}`].router;
         const middlewareList = Versioning[`v${env('VERSION')}`].middleware;
         const controllerList = Versioning[`v${env('VERSION')}`].controllers;
-        const routeClass = new Route(this.app, routeList, controllerList, middlewareList);
+        const routeClass = new Route(
+            this.app,
+            routeList,
+            controllerList,
+            middlewareList
+        );
         routeClass.create();
 
         // ? Error Handler Not Found
         this.app.use((req: Request, res: Response, next: NextFunction) => {
             next(new APIError(Enum.SystemErrorCode.PAGE_NOT_FOUND));
         });
-        
 
         this.app.use(ErrorHandler);
     }

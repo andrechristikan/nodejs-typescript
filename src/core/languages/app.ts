@@ -15,5 +15,5 @@ export default {
         refuse:
             'MongoDB connection error. Please make sure MongoDB is running. ',
         connected: `Database connected at ${config('database.url')}`,
-    }
+    },
 };
