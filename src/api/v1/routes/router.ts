@@ -10,11 +10,16 @@ const routers: defaultRoute[] = [
         ],
     },
     {
-        prefix: '/login',
+        prefix: '/auth',
         routes: [
             {
                 controller: 'AuthController@login',
-                url: '/',
+                url: '/login',
+                method: 'post',
+            },
+            {
+                controller: 'AuthController@signUp',
+                url: '/sign-up',
                 method: 'post',
             },
         ],

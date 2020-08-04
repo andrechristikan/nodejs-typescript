@@ -6,16 +6,10 @@ class APIError {
         let response;
         switch (code) {
             // ! Login
-            case Enum.SystemErrorCode.INVALID_EMAIL:
+            case Enum.SystemErrorCode.LOGIN_FAILED:
                 response = {
-                    httpCode: Enum.HttpErrorStatusCode.BAD_REQUEST,
-                    message: language('_core.error.badRequest'),
-                };
-                break;
-            case Enum.SystemErrorCode.USER_NOT_FOUND:
-                response = {
-                    httpCode: Enum.HttpErrorStatusCode.BAD_REQUEST,
-                    message: language('_core.error.badRequest'),
+                    httpCode: Enum.HttpErrorStatusCode.INTERNAL_SERVER_ERROR,
+                    message: language('auth.login.failed'),
                 };
                 break;
             case Enum.SystemErrorCode.INVALID_PASSWORD:
@@ -27,22 +21,51 @@ class APIError {
             case Enum.SystemErrorCode.TOKEN_REQUIRED:
                 response = {
                     httpCode: Enum.HttpErrorStatusCode.BAD_REQUEST,
-                    message: language('auth.isAuthenticated.tokenRequired'),
+                    message: language('auth.login.tokenRequired'),
                 };
                 break;
             case Enum.SystemErrorCode.INVALID_TOKEN:
                 response = {
                     httpCode: Enum.HttpErrorStatusCode.BAD_REQUEST,
-                    message: language('auth.isAuthenticated.invalidToken'),
+                    message: language('auth.login.invalidToken'),
                 };
                 break;
             case Enum.SystemErrorCode.TOKEN_GENERATE_FAILED:
                 response = {
                     httpCode: Enum.HttpErrorStatusCode.INTERNAL_SERVER_ERROR,
-                    message: language('auth.isAuthenticated.tokenGenerateFailed'),
+                    message: language('auth.login.tokenGenerateFailed'),
                 };
                 break;
 
+            // ! Sign up
+            case Enum.SystemErrorCode.SIGN_UP_FAILED:
+                response = {
+                    httpCode: Enum.HttpErrorStatusCode.INTERNAL_SERVER_ERROR,
+                    message: language('auth.signUp.failed'),
+                };
+                break;
+                
+
+            // ! User
+            case Enum.SystemErrorCode.USER_NOT_FOUND:
+                response = {
+                    httpCode: Enum.HttpErrorStatusCode.BAD_REQUEST,
+                    message: language('user.userNotFound'),
+                };
+                break;
+            case Enum.SystemErrorCode.USER_MOBILE_NUMBER_EXIST:
+                response = {
+                    httpCode: Enum.HttpErrorStatusCode.BAD_REQUEST,
+                    message: language('user.userMobileNumberExist'),
+                };
+                break;
+            case Enum.SystemErrorCode.USER_EMAIL_EXIST:
+                response = {
+                    httpCode: Enum.HttpErrorStatusCode.BAD_REQUEST,
+                    message: language('user.userEmailExist'),
+                };
+                break;
+                
             // ! System Error
             case Enum.SystemErrorCode.PAGE_NOT_FOUND:
                 response = {

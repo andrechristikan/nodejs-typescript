@@ -1,11 +1,15 @@
 export default {
-    isAuthenticated: {
+    login: {
+        success: 'Login success.',
+        failed: 'Login failed',
+        invalidPassword: 'Password invalid.',
         tokenRequired: 'Token require to getting this endpoint.',
         invalidToken: 'Token invalid.',
         tokenGenerateFailed: 'Failed to generate token.',
     },
-    login: {
-        invalidPassword: 'Password invalid.',
-        success: 'Login success.'
-    }
-}
+    signUp: {
+        success: 'Sign up success.',
+        failed: 'Sign up failed',
+        userExist: 'User already registered'
+    },
+};

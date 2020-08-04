@@ -1,6 +1,6 @@
 export default {
     get: {
         ok: 'test ok',
-        auth: 'auth ok'
+        auth: 'auth ok',
     },
 };
