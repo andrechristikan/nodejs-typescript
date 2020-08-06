@@ -223,6 +223,7 @@ export const {
     comparePassword,
     signUp,
     login,
+    signUpValidation,
     getByMobileNumber,
     getByEmail,
 } = new AuthService();
