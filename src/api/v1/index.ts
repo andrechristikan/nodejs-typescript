@@ -5,40 +5,20 @@ import APIError from './errors/APIError';
 import { SystemErrorCode } from './errors/Enum';
 import AuthMiddleware from './auth/AuthMiddleware';
 import AuthController from './auth/AuthController';
+import VersionClass from '../VersionClass';
 
-class Version1 {
-    private middleware: any;
-    private errors: any;
-    private router: defaultRoute[];
-    private controllers: any;
-    private languages: object;
-
+class Version1 extends VersionClass {
     constructor() {
-        this.setMiddleware();
-        this.setErrors();
-        this.setRouter();
-        this.setControllers();
-        this.setLanguages();
+        super();
     }
 
-    public get() {
-        const setVersion: baseVersioning = {
-            router: this.router,
-            middleware: this.middleware,
-            controllers: this.controllers,
-            languages: this.languages,
-            errors: this.errors,
-        };
-        return setVersion;
-    }
-
-    private setMiddleware = () => {
+    protected setMiddleware = (): void => {
         this.middleware = {
-            AuthMiddleware
+            AuthMiddleware,
         };
     };
 
-    private setErrors = () => {
+    protected setErrors = (): void => {
         this.errors = {
             APIError,
             enum: {
@@ -47,18 +27,18 @@ class Version1 {
         };
     };
 
-    private setRouter = () => {
+    protected setRouter = (): void => {
         this.router = router;
     };
 
-    private setControllers = () => {
+    protected setControllers = (): void => {
         this.controllers = {
             TestController,
-            AuthController
+            AuthController,
         };
     };
 
-    private setLanguages = () => {
+    protected setLanguages = (): void => {
         this.languages = languages;
     };
 }

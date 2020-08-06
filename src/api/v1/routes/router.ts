@@ -3,7 +3,7 @@ const routers: defaultRoute[] = [
         prefix: '/',
         routes: [
             {
-                controller: 'TestController@index',
+                controller: 'TestController@test',
                 url: '/',
                 method: 'get',
             },
@@ -27,16 +27,6 @@ const routers: defaultRoute[] = [
     {
         prefix: '/test',
         middleware: 'AuthMiddleware@isAuthenticated',
-    },
-    {
-        prefix: '/test',
-        routes: [
-            {
-                controller: 'TestController@test',
-                url: '/',
-                method: 'get',
-            },
-        ],
     },
 ];
 

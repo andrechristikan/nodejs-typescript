@@ -1,9 +1,5 @@
-import { Document, model, Schema } from 'mongoose';
-
-interface CountryInterface extends Document {
-    code: string;
-    country: string;
-}
+import { model, Schema } from 'mongoose';
+import { CountryInterface } from './CountyInterface';
 
 const tableName = 'countries';
 
@@ -20,7 +16,6 @@ const userSchema = new Schema({
     },
     countryName: {
         type: String,
-        unique: true,
         required: true,
     },
 });

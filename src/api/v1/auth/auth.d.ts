@@ -1,14 +1,13 @@
 type signUp = {
-    password: String;
-    firstName: String;
-    lastName: String;
-    email: String;
-    mobileNumber: String;
-    countryId: String;
+    password: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    mobileNumber: string;
+    countryId: string;
 };
 
-
 type login = {
-    email: String;
-    password: String;
+    email: string;
+    password: string;
 };

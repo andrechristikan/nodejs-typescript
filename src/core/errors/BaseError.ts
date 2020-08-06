@@ -4,13 +4,13 @@ class BaseError extends Error {
     public readonly code: number;
     public readonly httpCode: HttpErrorStatusCode;
     public readonly info: string;
-    public readonly errors: object | Array<object>;
+    public readonly errors: Array<object>;
 
     constructor(
         code: number,
         httpCode: HttpErrorStatusCode,
         info: string,
-        errors?: object | Array<object>
+        errors?: Array<object>
     ) {
         super(`${code}`);
 

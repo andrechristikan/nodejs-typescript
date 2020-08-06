@@ -1,23 +1,23 @@
 import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 
 class ErrorHandler {
-    public handler = (
+    public handler = async (
         err: ErrorRequestHandler,
         req: Request,
         res: Response,
         next: NextFunction
-    ) => {
-        const errorResponse = err as any;
-        const response: errorResponse = {
-            code: errorResponse.code,
-            message: errorResponse.info,
+    ): Promise<void> => {
+        const apiErrorResponse: apiErrorResponse = err as any;
+        const response: finalErrorResponse = {
+            code: apiErrorResponse.code,
+            message: apiErrorResponse.info,
         };
 
-        if (errorResponse.errors) {
-            response.errors = errorResponse.errors;
+        if (apiErrorResponse.errors) {
+            response.errors = apiErrorResponse.errors;
         }
 
-        res.status(errorResponse.httpCode).json(response);
+        res.status(apiErrorResponse.httpCode).json(response);
     };
 }
 

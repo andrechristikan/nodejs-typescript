@@ -6,7 +6,7 @@ class AuthMiddleware {
         req: Request,
         res: Response,
         next: NextFunction
-    ) => {
+    ): Promise<void> => {
         const authHeader = req.headers.authorization;
         if (authHeader) {
             const token = authHeader.split(' ')[1];

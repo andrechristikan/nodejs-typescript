@@ -79,7 +79,7 @@ class Logger {
         });
     };
 
-    public system = () => {
+    public system = (): any => {
         const { combine, timestamp, prettyPrint } = format;
         const configTransport = new DailyRotateFile({
             filename: `./logs/system/${config(
@@ -91,7 +91,7 @@ class Logger {
             maxFiles: config('logger.system.maxFiles'),
         });
 
-        const logger = createLogger({
+        const logger: any = createLogger({
             format: combine(timestamp(), prettyPrint()),
             transports: [new transports.Console(), configTransport],
         });

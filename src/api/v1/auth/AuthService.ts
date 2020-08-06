@@ -1,13 +1,14 @@
 import jwt from 'jsonwebtoken';
 import cryptoJS from 'crypto-js';
-import userModel, { UserBaseInterface } from '../user/UserModel';
-import countryModel from '../country/CountryModel';
+import userModel from '../user/UserModel';
+import { UserBaseInterface, UserDocument } from '../user/UserInterface';
+import { getById as countryGetById } from '../country/CountryService';
 
 class AuthService {
     public verifyToken = async (
         token: string,
         audience?: string | Array<string>
-    ) => {
+    ): Promise<object> => {
         return new Promise((resolve, reject) => {
             const options = {
                 algorithm: config('auth.jwt.algorithm'),
@@ -19,7 +20,7 @@ class AuthService {
                 token,
                 config('auth.jwt.secret'),
                 options,
-                (err: any, user: any) => {
+                (err: any, user: object) => {
                     if (err) {
                         reject(err);
                     }
@@ -32,7 +33,7 @@ class AuthService {
     public generateAccessToken = async (
         data: object,
         audience?: string | Array<string>
-    ) => {
+    ): Promise<string> => {
         return new Promise((resolve, reject) => {
             const options = {
                 algorithm: config('auth.jwt.algorithm'),
@@ -53,13 +54,13 @@ class AuthService {
         });
     };
 
-    public hashPassword = async (passwordString: string) => {
+    public hashPassword = async (passwordString: string): Promise<string> => {
         return new Promise((resolve, reject) => {
-            const passwordHashed = cryptoJS.HmacSHA512(
+            const passwordHashed: cryptoJS.WordArray = cryptoJS.HmacSHA512(
                 passwordString,
                 config('auth.password.salt')
             );
-            const passwordHashedBase64 = passwordHashed.toString(
+            const passwordHashedBase64: string = passwordHashed.toString(
                 cryptoJS.enc.Base64
             );
             resolve(passwordHashedBase64);
@@ -69,7 +70,7 @@ class AuthService {
     public comparePassword = async (
         passwordString: string,
         passwordHashed: string
-    ) => {
+    ): Promise<Boolean> => {
         return new Promise((resolve, reject) => {
             this.hashPassword(passwordString)
                 .then((passwordHashedBase64) => {
@@ -84,24 +85,18 @@ class AuthService {
         });
     };
 
-    public signUp = async (data: signUp) => {
-        const country = new Promise(async (resolve, reject) => {
-            const countyCode = await countryModel.findById(data.countryId);
-            const userData = data;
-            userData.countryId = countyCode._id;
-            resolve(userData);
-        });
-
+    public signUp = async (data: signUp): Promise<UserBaseInterface> => {
         return new Promise(async (resolve, reject) => {
             Promise.all([
-                country,
+                countryGetById(data.countryId),
                 this.signUpValidation(
                     data.email as string,
                     data.mobileNumber as string
                 ),
             ])
-                .then(([userData, validationResult]) => {
-                    const newUser = new userModel(data);
+                .then(([countyCode, validationResult]) => {
+                    data.countryId = countyCode._id;
+                    const newUser: UserDocument = new userModel(data);
                     newUser.save((err, user: UserBaseInterface) => {
                         if (err) {
                             reject(
@@ -120,33 +115,77 @@ class AuthService {
         });
     };
 
-    public signUpValidation = (email: string, mobileNumber: string) => {
-        return new Promise(async (resolve, reject) => {
-            const userEmail = await userModel.findOne({
-                email: email,
-            });
-            const userMobile = await userModel.findOne({
-                mobileNumber: mobileNumber,
-            });
+    public getByEmail = async (email: string): Promise<UserBaseInterface> => {
+        return new Promise((resolve, reject) => {
+            userModel
+                .findOne({
+                    email: email.toLowerCase(),
+                })
+                .exec((err: any, user: UserBaseInterface) => {
+                    if (err) {
+                        reject(err);
+                    }
 
-            const validated = [];
-            if (userMobile) {
-                validated.push({
-                    code: Enum.SystemErrorCode.USER_MOBILE_NUMBER_EXIST,
+                    resolve(user);
                 });
-            } else if (userEmail) {
-                validated.push({
-                    code: Enum.SystemErrorCode.USER_EMAIL_EXIST,
+        });
+    };
+
+    public getByMobileNumber = async (
+        mobileNumber: string
+    ): Promise<UserBaseInterface> => {
+        return new Promise((resolve, reject) => {
+            userModel
+                .findOne({
+                    mobileNumber: mobileNumber,
+                })
+                .exec((err: any, user: UserBaseInterface) => {
+                    if (err) {
+                        reject(err);
+                    }
+
+                    resolve(user);
                 });
-            }
+        });
+    };
 
-            if (!validated.length) {
-                reject(
-                    new APIError(Enum.SystemErrorCode.USER_NOT_FOUND, validated)
-                );
-            }
+    public signUpValidation = async (
+        email: string,
+        mobileNumber: string
+    ): Promise<Boolean> => {
+        return new Promise((resolve, reject) => {
+            Promise.all([
+                this.getByEmail(email),
+                this.getByMobileNumber(mobileNumber),
+            ])
+                .then(([userEmail, userMobile]) => {
+                    const validated: Array<rawErrorMessage> = [];
+                    if (userMobile) {
+                        validated.push({
+                            code: Enum.SystemErrorCode.USER_MOBILE_NUMBER_EXIST,
+                            field: 'mobileNumber',
+                        });
+                    }
+                    if (userEmail) {
+                        validated.push({
+                            code: Enum.SystemErrorCode.USER_EMAIL_EXIST,
+                            field: 'email',
+                        });
+                    }
+                    if (validated.length > 0) {
+                        reject(
+                            new APIError(
+                                Enum.SystemErrorCode.SIGN_UP_FAILED,
+                                validated
+                            )
+                        );
+                    }
 
-            resolve(true);
+                    resolve(true);
+                })
+                .catch((err) => {
+                    reject(err);
+                });
         });
     };
 
@@ -159,7 +198,6 @@ class AuthService {
                 reject(new APIError(Enum.SystemErrorCode.USER_NOT_FOUND));
             }
 
-            console.log(user.id);
             resolve(user);
             // this.generateAccessToken(data, user.id)
             //     .then((token) => {
@@ -185,4 +223,6 @@ export const {
     comparePassword,
     signUp,
     login,
+    getByMobileNumber,
+    getByEmail,
 } = new AuthService();

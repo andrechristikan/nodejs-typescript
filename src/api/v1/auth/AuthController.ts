@@ -1,9 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import { signUp as signUpService, login as loginService } from './AuthService';
-import { UserBaseInterface } from '../user/UserModel';
+import { UserBaseInterface } from '../user/UserInterface';
 
 class AuthController {
-    public login = async (req: Request, res: Response, next: NextFunction) => {
+    public login = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> => {
         const data: login = {
             email: req.body.email,
             password: req.body.password,
@@ -23,7 +27,11 @@ class AuthController {
             });
     };
 
-    public signUp = async (req: Request, res: Response, next: NextFunction) => {
+    public signUp = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> => {
         const data: signUp = {
             password: req.body.password,
             firstName: req.body.firstName,
@@ -36,7 +44,7 @@ class AuthController {
         signUpService(data)
             .then((result: UserBaseInterface) => {
                 const response = new APIResponse(
-                    Enum.HttpSuccessStatusCode.OK,
+                    Enum.HttpSuccessStatusCode.CREATED,
                     language('auth.signUp.success')
                 );
                 res.status(response.code).json(response);

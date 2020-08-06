@@ -18,7 +18,7 @@ class Route {
         this.middleware = middleware;
     }
 
-    public create = () => {
+    public create = (): void => {
         logger.info('Routes', this.routes);
 
         const router: any = Router();

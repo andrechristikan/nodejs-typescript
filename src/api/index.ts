@@ -1,5 +1,4 @@
 import Version1 from './v1';
-
 class VersioningClass {
     constructor() {
         const version1 = new Version1();
