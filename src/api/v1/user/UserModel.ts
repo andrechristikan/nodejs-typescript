@@ -6,7 +6,7 @@ import { UserDocument, UserBaseInterface } from './UserInterface';
 const tableName = 'users';
 
 const userSchema = new Schema({
-    countryId: {
+    country: {
         type: Schema.Types.ObjectId,
         ref: 'countries',
         required: true,

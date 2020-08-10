@@ -1,15 +1,18 @@
 import userModel from './UserModel';
-import { UserBaseInterface } from './UserInterface';
+import { UserBaseInterface, UserMiniInterface } from './UserInterface';
 import { getById as countryGetById } from '../country/CountryService';
 
 class UserService {
-    public getByEmail = async (email: string): Promise<UserBaseInterface> => {
+    public async getByEmail(email: string): Promise<UserMiniInterface> {
         return new Promise((resolve, reject) => {
             userModel
-                .findOne({
-                    email: email.toLowerCase(),
-                })
-                .exec((err: any, user: UserBaseInterface) => {
+                .findOne(
+                    {
+                        email: email.toLowerCase(),
+                    },
+                    { _id: 1 }
+                )
+                .exec((err: any, user: UserMiniInterface) => {
                     if (err) {
                         reject(err);
                     }
@@ -17,16 +20,34 @@ class UserService {
                     resolve(user);
                 });
         });
-    };
+    }
 
-    public getByMobileNumber = async (
+    public async getByMobileNumber(
         mobileNumber: string
-    ): Promise<UserBaseInterface> => {
+    ): Promise<UserMiniInterface> {
         return new Promise((resolve, reject) => {
             userModel
-                .findOne({
-                    mobileNumber: mobileNumber,
-                })
+                .findOne(
+                    {
+                        mobileNumber: mobileNumber,
+                    },
+                    { _id: 1 }
+                )
+                .exec((err, user: UserMiniInterface) => {
+                    if (err) {
+                        reject(err);
+                    }
+
+                    resolve(user);
+                });
+        });
+    }
+
+    public async getById(id: string): Promise<UserBaseInterface> {
+        return new Promise((resolve, reject) => {
+            userModel
+                .findById(id)
+                .populate('countries')
                 .exec((err, user: UserBaseInterface) => {
                     if (err) {
                         reject(err);
@@ -35,12 +56,12 @@ class UserService {
                     resolve(user);
                 });
         });
-    };
+    }
 
-    public store = async (data: userStore): Promise<UserBaseInterface> => {
-        return new Promise(async (resolve, reject) => {
-            countryGetById(data.countryId).then((countyCode) => {
-                data.countryId = countyCode._id;
+    public async store(data: userStore): Promise<UserBaseInterface> {
+        return new Promise((resolve, reject) => {
+            countryGetById(data.country).then((countyCode) => {
+                data.country = countyCode._id;
                 const newUser = new userModel(data);
                 newUser.save((err, user: UserBaseInterface) => {
                     if (err) {
@@ -53,8 +74,13 @@ class UserService {
                 });
             });
         });
-    };
+    }
 }
 
 export default UserService;
-export const { getByEmail, getByMobileNumber, store } = new UserService();
+export const {
+    getByEmail,
+    getByMobileNumber,
+    store,
+    getById,
+} = new UserService();

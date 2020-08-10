@@ -3,7 +3,7 @@ import Config from './Config';
 import Language from './Language';
 import Database from './Database';
 import { system } from './Logger';
-import { getVersion } from './Version';
+import { getVersion } from './version/Version';
 import APIResponse from './response/APIResponse';
 import { HttpErrorStatusCode } from './errors/Enum';
 import BaseError from './errors/BaseError';
@@ -41,49 +41,49 @@ class Core {
         }
     }
 
-    private setCore = (): void => {
+    private setCore(): void {
         this.env = Env;
         this.config = Config;
-    };
+    }
 
-    private setLanguage = (): void => {
+    private setLanguage(): void {
         const languageClass = new Language();
         languageClass.setLanguage(this.languages);
         const { language } = languageClass;
         global.language = language;
-    };
+    }
 
-    private setLogger = (): void => {
+    private setLogger(): void {
         global.logger = system();
-    };
+    }
 
-    private setDatabase = (): void => {
+    private setDatabase(): void {
         const databaseClass = new Database();
         databaseClass.create();
-    };
+    }
 
-    private setVersion = (): void => {
+    private setVersion(): void {
         global.getVersion = getVersion;
-    };
+    }
 
-    private setError = (): void => {
+    private setError(): void {
         global.APIError = this.errors.APIError;
         global.BaseError = BaseError;
-    };
+    }
 
-    private setResponse = (): void => {
+    private setResponse(): void {
         global.APIResponse = APIResponse;
-    };
+    }
 
-    private setEnum = () => {
+    private setEnum() {
         this.enum = {
             SystemErrorCode: this.errors.enum.SystemErrorCode,
             HttpErrorStatusCode,
-            HttpSuccessStatusCode
-        }
+            HttpSuccessStatusCode,
+        };
 
         global.Enum = this.enum;
-    };
+    }
 }
 
 export default Core;

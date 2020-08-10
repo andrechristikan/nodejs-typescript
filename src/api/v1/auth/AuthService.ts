@@ -1,13 +1,15 @@
 import jwt from 'jsonwebtoken';
 import cryptoJS from 'crypto-js';
-import { getByMobileNumber as userGetByMobileNumber , getByEmail as userGetByEmail, store as userStore } from '../user/UserService';
-import { UserBaseInterface } from '../user/UserInterface';
+import {
+    getByMobileNumber as userGetByMobileNumber,
+    getByEmail as userGetByEmail,
+} from '../user/UserService';
 
 class AuthService {
-    public verifyToken = async (
+    public async verifyToken(
         token: string,
         audience?: string | Array<string>
-    ): Promise<object> => {
+    ): Promise<object> {
         return new Promise((resolve, reject) => {
             const options = {
                 algorithm: config('auth.jwt.algorithm'),
@@ -27,12 +29,12 @@ class AuthService {
                 }
             );
         });
-    };
+    }
 
-    public generateAccessToken = async (
-        data: object,
+    public async generateAccessToken(
+        data: dataToken,
         audience?: string | Array<string>
-    ): Promise<string> => {
+    ): Promise<string> {
         return new Promise((resolve, reject) => {
             const options = {
                 algorithm: config('auth.jwt.algorithm'),
@@ -51,9 +53,9 @@ class AuthService {
                 }
             );
         });
-    };
+    }
 
-    public hashPassword = async (passwordString: string): Promise<string> => {
+    public async hashPassword(passwordString: string): Promise<string> {
         return new Promise((resolve, reject) => {
             const passwordHashed: cryptoJS.WordArray = cryptoJS.HmacSHA512(
                 passwordString,
@@ -64,12 +66,12 @@ class AuthService {
             );
             resolve(passwordHashedBase64);
         });
-    };
+    }
 
-    public comparePassword = async (
+    public async comparePassword(
         passwordString: string,
         passwordHashed: string
-    ): Promise<Boolean> => {
+    ): Promise<boolean> {
         return new Promise((resolve, reject) => {
             this.hashPassword(passwordString)
                 .then((passwordHashedBase64) => {
@@ -82,34 +84,12 @@ class AuthService {
                     reject(err);
                 });
         });
-    };
+    }
 
-    public signUp = async (data: signUp): Promise<UserBaseInterface> => {
-        return new Promise(async (resolve, reject) => {
-            Promise.all([
-                this.signUpValidation(
-                    data.email as string,
-                    data.mobileNumber as string
-                ),
-            ])
-                .then(([validationResult]) => {
-                    userStore(data).then( (user: UserBaseInterface) => {
-                        resolve(user);
-                    }).catch( (errUserStore) => {
-                        
-                        reject(errUserStore);
-                    });
-                })
-                .catch((errValidation) => {
-                    reject(errValidation);
-                });
-        });
-    };
-
-    public signUpValidation = async (
+    public async userExist(
         email: string,
         mobileNumber: string
-    ): Promise<Boolean> => {
+    ): Promise<Array<rawErrorMessage>> {
         return new Promise((resolve, reject) => {
             Promise.all([
                 userGetByEmail(email),
@@ -129,47 +109,15 @@ class AuthService {
                             field: 'email',
                         });
                     }
-                    if (validated.length > 0) {
-                        reject(
-                            new APIError(
-                                Enum.SystemErrorCode.SIGN_UP_FAILED,
-                                validated
-                            )
-                        );
-                    }
 
-                    resolve(true);
+                    resolve(validated);
                 })
                 .catch((err) => {
                     reject(err);
                 });
         });
-    };
+    }
 
-    public login = async (data: login) => {
-        return new Promise(async (resolve, reject) => {
-            // const email: string = data.email.toLowerCase();
-
-            // const user = await userModel.findOne({ email: email });
-            // if (!user) {
-            //     reject(new APIError(Enum.SystemErrorCode.USER_NOT_FOUND));
-            // }
-
-            resolve({});
-            // this.{generateAccessToken}(data, user.id)
-            //     .then((token) => {
-            //         const response = new APIResponse(
-            //             Enum.HttpSuccessStatusCode.OK,
-            //             language('auth.login.success'),
-            //             { token }
-            //         );
-            //         res.status(response.code).json(response);
-            //     })
-            //     .catch((err: any) => {
-            //         next(new APIError(Enum.SystemErrorCode.LOGIN_FAILED));
-            //     });
-        });
-    };
 }
 
 export default AuthService;
@@ -178,7 +126,5 @@ export const {
     generateAccessToken,
     hashPassword,
     comparePassword,
-    signUp,
-    login,
-    signUpValidation
+    userExist,
 } = new AuthService();

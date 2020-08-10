@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 import DailyRotateFile from 'winston-daily-rotate-file';
 
 class Logger {
-    public request = (log: log): any => {
+    public request(log: log): any {
         // Setup The Logger
         morgan.token('req-params', (req: Request) => {
             return JSON.stringify(req.params);
@@ -77,9 +77,9 @@ class Logger {
             stream: accessLogStream,
             skip: skip,
         });
-    };
+    }
 
-    public system = (): any => {
+    public system(): any {
         const { combine, timestamp, prettyPrint } = format;
         const configTransport = new DailyRotateFile({
             filename: `./logs/system/${config(
@@ -97,7 +97,7 @@ class Logger {
         });
 
         return logger;
-    };
+    }
 }
 
 export const { request, system } = new Logger();

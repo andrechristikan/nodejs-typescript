@@ -3,7 +3,7 @@ import connectMongo from 'connect-mongo';
 import session from 'express-session';
 
 class Database {
-    public create = (): void => {
+    public create(): void {
         mongoose
             .connect(config('database.url'), {
                 user: config('database.user'),
@@ -31,12 +31,12 @@ class Database {
                 });
             });
 
-        if (env('ENV') !== 'production') {
+        if (env('ENV') === 'debug') {
             mongoose.set('debug', true);
         }
-    };
+    }
 
-    public databaseSession = (): object => {
+    public databaseSession(): object {
         // Database
         const MongoStore = connectMongo(session);
         const sessionMongoStoreSetting: object = {
@@ -46,7 +46,7 @@ class Database {
             }),
         };
         return sessionMongoStoreSetting;
-    };
+    }
 }
 
 export default Database;

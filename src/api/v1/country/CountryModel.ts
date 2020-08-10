@@ -1,10 +1,10 @@
 import { model, Schema } from 'mongoose';
-import { CountryInterface } from './CountyInterface';
+import { CountryBaseInterface } from './CountyInterface';
 
 const tableName = 'countries';
 
 const userSchema = new Schema({
-    code: {
+    mobileNumberCode: {
         type: String,
         unique: true,
         required: true,
@@ -21,4 +21,4 @@ const userSchema = new Schema({
 });
 
 // Default export
-export default model<CountryInterface>(tableName, userSchema);
+export default model<CountryBaseInterface>(tableName, userSchema);

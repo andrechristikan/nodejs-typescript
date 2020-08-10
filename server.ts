@@ -7,11 +7,11 @@ class Server {
         this.main();
     }
 
-    private main = (): void => {
+    private main(): void {
         this.run();
     };
 
-    private run = (): void => {
+    private run(): void {
         const appClass = new App();
         const app = appClass.app;
         this.server = app.listen(app.get('port'), app.get('host'), () => {

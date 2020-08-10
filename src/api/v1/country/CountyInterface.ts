@@ -1,6 +1,7 @@
 import { Document } from 'mongoose';
 
-export interface CountryInterface extends Document {
-    code: string;
-    country: string;
+export interface CountryBaseInterface extends Document {
+    mobileNumberCode: string;
+    countryCode: string;
+    countryName: string;
 }

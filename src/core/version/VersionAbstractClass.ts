@@ -1,4 +1,5 @@
-class VersionClass {
+
+abstract class VersionAbstractClass {
     protected middleware: any;
     protected errors: any;
     protected router: defaultRoute[];
@@ -22,14 +23,14 @@ class VersionClass {
         return setVersion;
     };
 
-    protected setMiddleware = (): void => {};
+    protected abstract setMiddleware(): void ;
 
-    protected setErrors = (): void => {};
+    protected abstract setErrors(): void;
 
-    protected setRouter = (): void => {};
+    protected abstract setRouter(): void;
 
-    protected setControllers = (): void => {};
+    protected abstract setControllers(): void;
 
-    protected setLanguages = (): void => {};
+    protected abstract setLanguages(): void;
 }
-export default VersionClass;
+export default VersionAbstractClass;

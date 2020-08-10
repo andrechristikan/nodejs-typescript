@@ -13,7 +13,7 @@ class Language {
         };
     }
 
-    public setLanguage = (languages: object): void => {
+    public setLanguage (languages: object): void  {
         this.languages = {
             ...this.languages,
             ...languages,

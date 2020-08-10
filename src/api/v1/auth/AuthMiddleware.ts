@@ -2,11 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import { verifyToken } from './AuthService';
 
 class AuthMiddleware {
-    public isAuthenticated = async (
+    public async isAuthenticated(
         req: Request,
         res: Response,
         next: NextFunction
-    ): Promise<void> => {
+    ): Promise<void> {
         const authHeader = req.headers.authorization;
         if (authHeader) {
             const token = authHeader.split(' ')[1];
@@ -20,7 +20,7 @@ class AuthMiddleware {
         } else {
             next(new APIError(Enum.SystemErrorCode.TOKEN_REQUIRED));
         }
-    };
+    }
 }
 
 export default AuthMiddleware;

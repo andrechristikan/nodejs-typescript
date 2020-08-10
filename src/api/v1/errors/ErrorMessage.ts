@@ -6,7 +6,7 @@ class ErrorMessage {
     ): detailErrorMessage[] => {
         const newError: detailErrorMessage[] = [];
         errors.forEach((value: rawErrorMessage) => {
-            let error: errorMessage = this.setErrorMessage(value.code);
+            const error: errorMessage = this.setErrorMessage(value.code);
             newError.push({
                 ...value,
                 message: error.message,
@@ -15,7 +15,7 @@ class ErrorMessage {
         return newError;
     };
 
-    public setErrorMessage = (code: SystemErrorCode): errorMessage => {
+    public setErrorMessage(code: SystemErrorCode): errorMessage {
         switch (code) {
             // ? FORM ERROR
             // ! LOGIN
@@ -89,7 +89,7 @@ class ErrorMessage {
                     message: language('_core.error.internalServerError'),
                 };
         }
-    };
+    }
 }
 
 export default ErrorMessage;

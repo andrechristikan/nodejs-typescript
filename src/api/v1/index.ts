@@ -5,41 +5,41 @@ import APIError from './errors/APIError';
 import { SystemErrorCode } from './errors/Enum';
 import AuthMiddleware from './auth/AuthMiddleware';
 import AuthController from './auth/AuthController';
-import VersionClass from '../VersionClass';
+import VersionAbstractClass from '../../core/version/VersionAbstractClass';
 
-class Version1 extends VersionClass {
+class Version1 extends VersionAbstractClass {
     constructor() {
         super();
     }
 
-    protected setMiddleware = (): void => {
+    setMiddleware(): void {
         this.middleware = {
             AuthMiddleware,
         };
-    };
+    }
 
-    protected setErrors = (): void => {
+    setErrors(): void {
         this.errors = {
             APIError,
             enum: {
                 SystemErrorCode,
             },
         };
-    };
+    }
 
-    protected setRouter = (): void => {
+    setRouter(): void {
         this.router = router;
-    };
+    }
 
-    protected setControllers = (): void => {
+    setControllers(): void {
         this.controllers = {
             TestController,
             AuthController,
         };
-    };
+    }
 
-    protected setLanguages = (): void => {
+    setLanguages(): void {
         this.languages = languages;
-    };
+    }
 }
 export default Version1;

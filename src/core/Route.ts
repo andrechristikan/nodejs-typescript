@@ -18,10 +18,10 @@ class Route {
         this.middleware = middleware;
     }
 
-    public create = (): void => {
+    public create(): void {
         logger.info('Routes', this.routes);
 
-        const router: any = Router();
+        const router: Router = Router();
         this.routes.forEach((value: defaultRoute) => {
             if (value.middleware) {
                 const middleware = value.middleware.split('@');
@@ -38,13 +38,17 @@ class Route {
                         const classMiddleware = new this.middleware[
                             middleware[0]
                         ]();
-                        router[route.method](
+                        this.setRoute(
+                            router,
+                            route.method,
                             `${value.prefix}${route.url}`,
-                            classMiddleware[middleware[1]],
-                            classController[controller[1]]
+                            classController[controller[1]],
+                            classMiddleware[middleware[1]]
                         );
                     } else {
-                        router[route.method](
+                        this.setRoute(
+                            router,
+                            route.method,
                             `${value.prefix}${route.url}`,
                             classController[controller[1]]
                         );
@@ -55,7 +59,60 @@ class Route {
 
         // prefix route api
         this.app.use(`/${env('ROUTE_PREFIX')}/v${env('VERSION')}`, router);
-    };
+    }
+
+    private setRoute(
+        router: Router,
+        method: string,
+        url: string,
+        controller: any,
+        middleware?: any
+    ): void {
+        switch (method) {
+            case 'get':
+                if(middleware){
+                    router.get(url, middleware, controller);
+                }else{
+                    router.get(url, controller);
+                }
+                break;
+            case 'post':
+                if(middleware){
+                    router.post(url, middleware, controller);
+                }else{
+                    router.post(url, controller);
+                }
+                break;
+            case 'put':
+                if(middleware){
+                    router.put(url, middleware, controller);
+                }else{
+                    router.put(url, controller);
+                }
+                break;
+            case 'delete':
+                if(middleware){
+                    router.delete(url, middleware, controller);
+                }else{
+                    router.delete(url, controller);
+                }
+                break;
+            case 'patch':
+                if(middleware){
+                    router.patch(url, middleware, controller);
+                }else{
+                    router.patch(url, controller);
+                }
+                break;
+            default:
+                if(middleware){
+                    router.get(url, middleware, controller);
+                }else{
+                    router.get(url, controller);
+                }
+                break;
+        }
+    }
 }
 
 export default Route;

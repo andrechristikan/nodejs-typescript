@@ -1,17 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
 
 class TestController {
-    public test = async (
+    public async test(
         req: Request,
         res: Response,
         next: NextFunction
-    ): Promise<void> => {
+    ): Promise<void> {
         const response: APIResponse = new APIResponse(
             Enum.HttpSuccessStatusCode.OK,
             language('test.get.ok')
         );
         res.status(response.code).json(response);
-    };
+    }
 }
 
 export default TestController;

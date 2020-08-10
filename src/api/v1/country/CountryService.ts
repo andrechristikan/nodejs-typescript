@@ -1,19 +1,19 @@
 import countryModel from '../country/CountryModel';
-import { CountryInterface } from './CountyInterface';
+import { CountryBaseInterface } from './CountyInterface';
 
 class CountryService {
-    public getById = async (id: string): Promise<CountryInterface> => {
+    public async getById(id: string): Promise<CountryBaseInterface> {
         return new Promise((resolve, reject) => {
             countryModel
                 .findById(id)
-                .exec((err: any, country: CountryInterface) => {
+                .exec((err: any, country: CountryBaseInterface) => {
                     if (err) {
                         reject(err);
                     }
                     resolve(country);
                 });
         });
-    };
+    }
 }
 
 export default CountryService;

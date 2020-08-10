@@ -4,5 +4,5 @@ type userStore = {
     lastName: string;
     email: string;
     mobileNumber: string;
-    countryId: string;
-}
+    country: string;
+};
