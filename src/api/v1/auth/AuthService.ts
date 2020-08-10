@@ -1,8 +1,7 @@
 import jwt from 'jsonwebtoken';
 import cryptoJS from 'crypto-js';
-import userModel from '../user/UserModel';
-import { UserBaseInterface, UserDocument } from '../user/UserInterface';
-import { getById as countryGetById } from '../country/CountryService';
+import { getByMobileNumber as userGetByMobileNumber , getByEmail as userGetByEmail, store as userStore } from '../user/UserService';
+import { UserBaseInterface } from '../user/UserInterface';
 
 class AuthService {
     public verifyToken = async (
@@ -88,63 +87,21 @@ class AuthService {
     public signUp = async (data: signUp): Promise<UserBaseInterface> => {
         return new Promise(async (resolve, reject) => {
             Promise.all([
-                countryGetById(data.countryId),
                 this.signUpValidation(
                     data.email as string,
                     data.mobileNumber as string
                 ),
             ])
-                .then(([countyCode, validationResult]) => {
-                    data.countryId = countyCode._id;
-                    const newUser: UserDocument = new userModel(data);
-                    newUser.save((err, user: UserBaseInterface) => {
-                        if (err) {
-                            reject(
-                                new APIError(
-                                    Enum.SystemErrorCode.SIGN_UP_FAILED
-                                )
-                            );
-                        }
-
+                .then(([validationResult]) => {
+                    userStore(data).then( (user: UserBaseInterface) => {
                         resolve(user);
+                    }).catch( (errUserStore) => {
+                        
+                        reject(errUserStore);
                     });
                 })
-                .catch((err) => {
-                    reject(err);
-                });
-        });
-    };
-
-    public getByEmail = async (email: string): Promise<UserBaseInterface> => {
-        return new Promise((resolve, reject) => {
-            userModel
-                .findOne({
-                    email: email.toLowerCase(),
-                })
-                .exec((err: any, user: UserBaseInterface) => {
-                    if (err) {
-                        reject(err);
-                    }
-
-                    resolve(user);
-                });
-        });
-    };
-
-    public getByMobileNumber = async (
-        mobileNumber: string
-    ): Promise<UserBaseInterface> => {
-        return new Promise((resolve, reject) => {
-            userModel
-                .findOne({
-                    mobileNumber: mobileNumber,
-                })
-                .exec((err: any, user: UserBaseInterface) => {
-                    if (err) {
-                        reject(err);
-                    }
-
-                    resolve(user);
+                .catch((errValidation) => {
+                    reject(errValidation);
                 });
         });
     };
@@ -155,8 +112,8 @@ class AuthService {
     ): Promise<Boolean> => {
         return new Promise((resolve, reject) => {
             Promise.all([
-                this.getByEmail(email),
-                this.getByMobileNumber(mobileNumber),
+                userGetByEmail(email),
+                userGetByMobileNumber(mobileNumber),
             ])
                 .then(([userEmail, userMobile]) => {
                     const validated: Array<rawErrorMessage> = [];
@@ -191,15 +148,15 @@ class AuthService {
 
     public login = async (data: login) => {
         return new Promise(async (resolve, reject) => {
-            const email: string = data.email.toLowerCase();
+            // const email: string = data.email.toLowerCase();
 
-            const user = await userModel.findOne({ email: email });
-            if (!user) {
-                reject(new APIError(Enum.SystemErrorCode.USER_NOT_FOUND));
-            }
+            // const user = await userModel.findOne({ email: email });
+            // if (!user) {
+            //     reject(new APIError(Enum.SystemErrorCode.USER_NOT_FOUND));
+            // }
 
-            resolve(user);
-            // this.generateAccessToken(data, user.id)
+            resolve({});
+            // this.{generateAccessToken}(data, user.id)
             //     .then((token) => {
             //         const response = new APIResponse(
             //             Enum.HttpSuccessStatusCode.OK,
@@ -223,7 +180,5 @@ export const {
     comparePassword,
     signUp,
     login,
-    signUpValidation,
-    getByMobileNumber,
-    getByEmail,
+    signUpValidation
 } = new AuthService();
