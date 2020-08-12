@@ -8,7 +8,7 @@ class TestController {
     ): Promise<void> {
         const response: APIResponse = new APIResponse(
             Enum.HttpSuccessStatusCode.OK,
-            language('test.get.ok')
+            language('test.ok')
         );
         res.status(response.code).json(response);
     }
