@@ -46,7 +46,6 @@ userSchema.pre<UserBaseInterface>('save', function save(next: NextFunction) {
     if (!user.isModified('password')) {
         next();
     }
-
     hashPassword(user.password)
         .then((result: string) => {
             user.password = result;

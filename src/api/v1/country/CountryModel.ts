@@ -3,7 +3,7 @@ import { CountryBaseInterface } from './CountyInterface';
 
 const tableName = 'countries';
 
-const userSchema = new Schema({
+const countrySchema = new Schema({
     mobileNumberCode: {
         type: String,
         unique: true,
@@ -21,4 +21,4 @@ const userSchema = new Schema({
 });
 
 // Default export
-export default model<CountryBaseInterface>(tableName, userSchema);
+export default model<CountryBaseInterface>(tableName, countrySchema);

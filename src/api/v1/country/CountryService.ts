@@ -1,4 +1,4 @@
-import countryModel from '../country/CountryModel';
+import countryModel from './CountryModel';
 import { CountryBaseInterface } from './CountyInterface';
 
 class CountryService {
@@ -10,6 +10,7 @@ class CountryService {
                     if (err) {
                         reject(err);
                     }
+
                     resolve(country);
                 });
         });

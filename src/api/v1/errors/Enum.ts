@@ -9,12 +9,16 @@ export enum SystemErrorCode {
 
     // ! SIGN UP
     SIGN_UP_FAILED = 1010,
+    SIGN_UP_VALIDATION_FAILED = 1011,
 
     // ? FORM ERROR
     // ! USER
     USER_NOT_FOUND = 3100,
     USER_MOBILE_NUMBER_EXIST = 3101,
     USER_EMAIL_EXIST = 3102,
+
+    // ! COUNTRY
+    COUNTRY_NOT_FOUND = 3150,
 
     // ? SYSTEM ERROR
     PAGE_NOT_FOUND = 5001,

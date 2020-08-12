@@ -2,14 +2,15 @@ import { Request, Response, NextFunction } from 'express';
 import {
     generateAccessToken as generateAccessTokenService,
     comparePassword as comparePasswordService,
-    userExist as userExistService,
 } from './AuthService';
 import { UserBaseInterface, UserMiniInterface } from '../user/UserInterface';
 import {
     store as userStoreService,
     getByEmail as userGetByEmailService,
     getById as userGetByIdService,
+    checkExist as userCheckExist,
 } from '../user/UserService';
+import { getById as countryGetById } from '../country/CountryService';
 
 class AuthController {
     public async login(
@@ -53,7 +54,7 @@ class AuthController {
 
                                 const response = new APIResponse(
                                     Enum.HttpSuccessStatusCode.OK,
-                                    language('auth.login.success'),
+                                    language('auth.login.formSuccess'),
                                     { token: generateToken }
                                 );
                                 res.status(response.code).json(response);
@@ -81,44 +82,48 @@ class AuthController {
         next: NextFunction
     ): Promise<void> {
         const data: signUp = {
+            country: req.body.country,
             password: req.body.password,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
             mobileNumber: req.body.mobileNumber,
-            country: req.body.country,
         };
 
         Promise.all([
-            userExistService(
-                data.email as string,
-                data.mobileNumber as string
-            ),
+            userCheckExist(data.email, data.mobileNumber),
+            countryGetById(data.country),
         ])
-            .then(([existed]) => {
+            .then(([existed, country]) => {
                 if (existed.length > 0) {
                     next(
                         new APIError(
-                            Enum.SystemErrorCode.SIGN_UP_FAILED,
+                            Enum.SystemErrorCode.SIGN_UP_VALIDATION_FAILED,
                             existed
                         )
                     );
-                }else{
+                } else if (!country) {
+                    next(new APIError(Enum.SystemErrorCode.COUNTRY_NOT_FOUND));
+                } else {
                     userStoreService(data)
                         .then((user: UserBaseInterface) => {
                             const response = new APIResponse(
                                 Enum.HttpSuccessStatusCode.CREATED,
-                                language('auth.signUp.success')
+                                language('auth.signUp.formSuccess')
                             );
                             res.status(response.code).json(response);
                         })
                         .catch((userStoreError) => {
-                            next(userStoreError);
+                            next(
+                                new APIError(
+                                    Enum.SystemErrorCode.SIGN_UP_FAILED
+                                )
+                            );
                         });
                 }
             })
             .catch((signUpError) => {
-                next(signUpError);
+                next(new APIError(Enum.SystemErrorCode.SIGN_UP_FAILED));
             });
     }
 }

@@ -1,9 +1,5 @@
 import jwt from 'jsonwebtoken';
 import cryptoJS from 'crypto-js';
-import {
-    getByMobileNumber as userGetByMobileNumber,
-    getByEmail as userGetByEmail,
-} from '../user/UserService';
 
 class AuthService {
     public async verifyToken(
@@ -85,39 +81,6 @@ class AuthService {
                 });
         });
     }
-
-    public async userExist(
-        email: string,
-        mobileNumber: string
-    ): Promise<Array<rawErrorMessage>> {
-        return new Promise((resolve, reject) => {
-            Promise.all([
-                userGetByEmail(email),
-                userGetByMobileNumber(mobileNumber),
-            ])
-                .then(([userEmail, userMobile]) => {
-                    const validated: Array<rawErrorMessage> = [];
-                    if (userMobile) {
-                        validated.push({
-                            code: Enum.SystemErrorCode.USER_MOBILE_NUMBER_EXIST,
-                            field: 'mobileNumber',
-                        });
-                    }
-                    if (userEmail) {
-                        validated.push({
-                            code: Enum.SystemErrorCode.USER_EMAIL_EXIST,
-                            field: 'email',
-                        });
-                    }
-
-                    resolve(validated);
-                })
-                .catch((err) => {
-                    reject(err);
-                });
-        });
-    }
-
 }
 
 export default AuthService;
@@ -126,5 +89,4 @@ export const {
     generateAccessToken,
     hashPassword,
     comparePassword,
-    userExist,
 } = new AuthService();

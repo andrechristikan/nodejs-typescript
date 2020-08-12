@@ -22,7 +22,7 @@ class ErrorMessage {
             case Enum.SystemErrorCode.LOGIN_FAILED:
                 return {
                     httpCode: Enum.HttpErrorStatusCode.BAD_REQUEST,
-                    message: language('auth.login.failed'),
+                    message: language('auth.login.formFailed'),
                 };
             case Enum.SystemErrorCode.INVALID_PASSWORD:
                 return {
@@ -49,7 +49,12 @@ class ErrorMessage {
             case Enum.SystemErrorCode.SIGN_UP_FAILED:
                 return {
                     httpCode: Enum.HttpErrorStatusCode.BAD_REQUEST,
-                    message: language('auth.signUp.failed'),
+                    message: language('auth.signUp.formFailed'),
+                };
+            case Enum.SystemErrorCode.SIGN_UP_VALIDATION_FAILED:
+                return {
+                    httpCode: Enum.HttpErrorStatusCode.BAD_REQUEST,
+                    message: language('auth.signUp.validationFailed'),
                 };
 
             // ? FORM ERROR
@@ -57,17 +62,23 @@ class ErrorMessage {
             case Enum.SystemErrorCode.USER_NOT_FOUND:
                 return {
                     httpCode: Enum.HttpErrorStatusCode.BAD_REQUEST,
-                    message: language('user.userNotFound'),
+                    message: language('user.notFound'),
                 };
             case Enum.SystemErrorCode.USER_MOBILE_NUMBER_EXIST:
                 return {
                     httpCode: Enum.HttpErrorStatusCode.BAD_REQUEST,
-                    message: language('user.userMobileNumberExist'),
+                    message: language('user.mobileNumberExist'),
                 };
             case Enum.SystemErrorCode.USER_EMAIL_EXIST:
                 return {
                     httpCode: Enum.HttpErrorStatusCode.BAD_REQUEST,
-                    message: language('user.userEmailExist'),
+                    message: language('user.emailExist'),
+                };
+            // ! COUNTRY
+            case Enum.SystemErrorCode.COUNTRY_NOT_FOUND:
+                return {
+                    httpCode: Enum.HttpErrorStatusCode.BAD_REQUEST,
+                    message: language('country.notFound'),
                 };
 
             // ? SYSTEM ERROR

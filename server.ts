@@ -9,7 +9,7 @@ class Server {
 
     private main(): void {
         this.run();
-    };
+    }
 
     private run(): void {
         const appClass = new App();
@@ -18,7 +18,7 @@ class Server {
             logger.info(language('_core.app.server.running'));
             logger.info(language('_core.app.server.exit'));
         });
-    };
+    }
 }
 
 const serverClass = new Server();

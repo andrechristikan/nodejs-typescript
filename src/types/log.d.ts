@@ -1,4 +1,5 @@
 declare const logger: any;
+
 type log = {
     rules: {
         path: string;

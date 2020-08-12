@@ -1,11 +1,7 @@
 import { Document, Schema } from 'mongoose';
 
 export interface UserDocument extends Document {
-    country: {
-        mobileNumberCode: string;
-        countryCode: string;
-        countryName: string;
-    };
+    country: Schema.Types.ObjectId;
     mobileNumber: string;
     password: string;
     email: string;
