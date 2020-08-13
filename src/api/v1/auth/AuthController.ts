@@ -34,27 +34,26 @@ class AuthController {
                     .then((user: UserFullInterface) => {
                         const dataToken: dataToken = {
                             id: user.id,
-                            firstName: user.firstName,
-                            lastName: user.lastName,
-                            email: user.email,
-                            mobileNumber: user.mobileNumber,
-                            country: {
-                                mobileNumberCode: user.country.mobileNumberCode,
-                                countryCode: user.country.countryCode,
-                                countryName: user.country.countryName,
-                            },
                         };
 
-                        console.log('user', user);
-                        console.log('country', user.country);
-                        console.log('dataToken', dataToken);
+                        const userResponse = {
+                            fullName: user.fullName,
+                            email: user.email,
+                        };
+
                         Promise.all([
                             comparePasswordService(
                                 data.password,
                                 user.password
                             ),
-                            generateAccessTokenService(dataToken, user.id),
-                            generateRefreshTokenService(dataToken, user.id),
+                            generateAccessTokenService(
+                                dataToken,
+                                req.get('host')
+                            ),
+                            generateRefreshTokenService(
+                                dataToken,
+                                req.get('host')
+                            ),
                         ])
                             .then(
                                 ([
@@ -74,6 +73,7 @@ class AuthController {
                                         Enum.HttpSuccessStatusCode.OK,
                                         language('auth.login.formSuccess'),
                                         {
+                                            user: userResponse,
                                             accessToken: generateToken,
                                             refreshToken: refreshToken,
                                         }
@@ -81,7 +81,8 @@ class AuthController {
                                     res.status(response.code).json(response);
                                 }
                             )
-                            .catch(() => {
+                            .catch((err) => {
+                                console.log(err);
                                 next(
                                     new APIError(
                                         Enum.SystemErrorCode.LOGIN_FAILED

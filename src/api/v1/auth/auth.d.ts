@@ -14,19 +14,14 @@ type login = {
 
 type dataToken = {
     id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    mobileNumber: string;
-    country: {
-        mobileNumberCode: string;
-        countryCode: string;
-        countryName: string;
-    }
+};
 
+type userResponse = {
+    fullName: string;
+    email: string;
 };
 
 type tokenGenerate = {
-    token: string,
-    expiresIn: string
-}
+    token: string;
+    expiresIn: string;
+};

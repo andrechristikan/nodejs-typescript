@@ -11,7 +11,7 @@ class AuthMiddleware {
         if (authHeader) {
             const token = authHeader.split(' ')[1];
             verifyAccessToken(token, req.get('host'))
-                .then(() => {
+                .then((dataToken: dataToken) => {
                     next();
                 })
                 .catch((err: any) => {

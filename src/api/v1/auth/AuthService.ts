@@ -74,6 +74,12 @@ class AuthService {
         });
     }
 
+    public async decodeAccessToken(token: string) {
+        return new Promise((resolve, reject) => {
+            resolve(jwt.decode(token));
+        });
+    }
+
     public async hashPassword(passwordString: string): Promise<string> {
         return new Promise((resolve, reject) => {
             const passwordHashed: cryptoJS.WordArray = cryptoJS.HmacSHA512(
@@ -113,4 +119,5 @@ export const {
     hashPassword,
     comparePassword,
     generateRefreshToken,
+    decodeAccessToken,
 } = new AuthService();
