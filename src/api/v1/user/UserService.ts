@@ -2,7 +2,7 @@ import userModel from './UserModel';
 import {
     UserBaseInterface,
     UserMiniInterface,
-    UserDocument,
+    UserFullInterface,
 } from './UserInterface';
 
 class UserService {
@@ -46,12 +46,12 @@ class UserService {
         });
     }
 
-    public async getById(id: string): Promise<UserBaseInterface> {
+    public async getById(id: string): Promise<UserFullInterface> {
         return new Promise((resolve, reject) => {
             userModel
                 .findById(id)
                 .populate('countries')
-                .exec((err, user: UserBaseInterface) => {
+                .exec((err, user: UserFullInterface) => {
                     if (err) {
                         reject(err);
                     }

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { verifyToken } from './AuthService';
+import { verifyAccessToken } from './AuthService';
 
 class AuthMiddleware {
     public async isAuthenticated(
@@ -10,7 +10,7 @@ class AuthMiddleware {
         const authHeader = req.headers.authorization;
         if (authHeader) {
             const token = authHeader.split(' ')[1];
-            verifyToken(token, req.get('host'))
+            verifyAccessToken(token, req.get('host'))
                 .then(() => {
                     next();
                 })

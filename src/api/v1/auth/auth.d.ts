@@ -18,6 +18,15 @@ type dataToken = {
     lastName: string;
     email: string;
     mobileNumber: string;
-    mobileNumberCode: string;
-    countryCode: string;
+    country: {
+        mobileNumberCode: string;
+        countryCode: string;
+        countryName: string;
+    }
+
 };
+
+type tokenGenerate = {
+    token: string,
+    expiresIn: string
+}

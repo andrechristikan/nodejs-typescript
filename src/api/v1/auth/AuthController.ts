@@ -1,9 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import {
     generateAccessToken as generateAccessTokenService,
+    generateRefreshToken as generateRefreshTokenService,
     comparePassword as comparePasswordService,
 } from './AuthService';
-import { UserBaseInterface, UserMiniInterface } from '../user/UserInterface';
+import {
+    UserBaseInterface,
+    UserMiniInterface,
+    UserFullInterface,
+} from '../user/UserInterface';
 import {
     store as userStoreService,
     getByEmail as userGetByEmailService,
@@ -26,39 +31,56 @@ class AuthController {
         userGetByEmailService(data.email)
             .then((checkEmail: UserMiniInterface) => {
                 userGetByIdService(checkEmail.id)
-                    .then((user: UserBaseInterface) => {
+                    .then((user: UserFullInterface) => {
                         const dataToken: dataToken = {
                             id: user.id,
                             firstName: user.firstName,
                             lastName: user.lastName,
                             email: user.email,
                             mobileNumber: user.mobileNumber,
-                            mobileNumberCode: user.country.mobileNumberCode,
-                            countryCode: user.country.countryCode,
+                            country: {
+                                mobileNumberCode: user.country.mobileNumberCode,
+                                countryCode: user.country.countryCode,
+                                countryName: user.country.countryName,
+                            },
                         };
+
+                        console.log('user', user);
+                        console.log('country', user.country);
+                        console.log('dataToken', dataToken);
                         Promise.all([
                             comparePasswordService(
                                 data.password,
                                 user.password
                             ),
                             generateAccessTokenService(dataToken, user.id),
+                            generateRefreshTokenService(dataToken, user.id),
                         ])
-                            .then(([comparePassword, generateToken]) => {
-                                if (!comparePassword) {
-                                    next(
-                                        new APIError(
-                                            Enum.SystemErrorCode.INVALID_PASSWORD
-                                        )
-                                    );
-                                }
+                            .then(
+                                ([
+                                    comparePassword,
+                                    generateToken,
+                                    refreshToken,
+                                ]) => {
+                                    if (!comparePassword) {
+                                        next(
+                                            new APIError(
+                                                Enum.SystemErrorCode.INVALID_PASSWORD
+                                            )
+                                        );
+                                    }
 
-                                const response = new APIResponse(
-                                    Enum.HttpSuccessStatusCode.OK,
-                                    language('auth.login.formSuccess'),
-                                    { token: generateToken }
-                                );
-                                res.status(response.code).json(response);
-                            })
+                                    const response = new APIResponse(
+                                        Enum.HttpSuccessStatusCode.OK,
+                                        language('auth.login.formSuccess'),
+                                        {
+                                            accessToken: generateToken,
+                                            refreshToken: refreshToken,
+                                        }
+                                    );
+                                    res.status(response.code).json(response);
+                                }
+                            )
                             .catch(() => {
                                 next(
                                     new APIError(

@@ -4,9 +4,15 @@ export default {
         salt: 'gTQxq251q3Ewqw14qe1',
     },
     jwt: {
-        secret: env('JWT_SECRET_TOKEN'),
-        algorithm: 'HS256',
-        expiresIn: env('JWT_EXPIRED_TOKEN'),
-        maxAge: '7d',
+        access: {
+            secret: env('JWT_ACCESS_TOKEN_SECRET'),
+            algorithm: 'HS256',
+            expiresIn: env('JWT_ACCESS_TOKEN_LIFE'),
+        },
+        refresh: {
+            secret: env('JWT_REFRESH_TOKEN_SECRET'),
+            algorithm: 'HS256',
+            expiresIn: env('JWT_REFRESH_TOKEN_LIFE'),
+        }
     },
 };

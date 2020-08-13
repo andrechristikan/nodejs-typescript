@@ -2,20 +2,19 @@ import jwt from 'jsonwebtoken';
 import cryptoJS from 'crypto-js';
 
 class AuthService {
-    public async verifyToken(
+    public async verifyAccessToken(
         token: string,
         audience?: string | Array<string>
     ): Promise<object> {
         return new Promise((resolve, reject) => {
             const options = {
-                algorithm: config('auth.jwt.algorithm'),
-                expiresIn: config('auth.jwt.expiresIn'),
-                maxAge: config('auth.jwt.maxAge'),
+                algorithm: config('auth.jwt.access.algorithm'),
+                maxAge: config('auth.jwt.access.maxAge'),
                 audience: audience,
             };
             jwt.verify(
                 token,
-                config('auth.jwt.secret'),
+                config('auth.jwt.access.secret'),
                 options,
                 (err: any, user: object) => {
                     if (err) {
@@ -33,13 +32,37 @@ class AuthService {
     ): Promise<string> {
         return new Promise((resolve, reject) => {
             const options = {
-                algorithm: config('auth.jwt.algorithm'),
-                expiresIn: config('auth.jwt.expiresIn'),
+                algorithm: config('auth.jwt.access.algorithm'),
+                expiresIn: config('auth.jwt.access.expiresIn'),
                 audience: audience,
             };
             jwt.sign(
                 data,
-                config('auth.jwt.secret'),
+                config('auth.jwt.access.secret'),
+                options,
+                (err: any, token: string) => {
+                    if (err) {
+                        reject(err);
+                    }
+                    resolve(token);
+                }
+            );
+        });
+    }
+
+    public async generateRefreshToken(
+        data: dataToken,
+        audience?: string | Array<string>
+    ): Promise<string> {
+        return new Promise((resolve, reject) => {
+            const options = {
+                algorithm: config('auth.jwt.refresh.algorithm'),
+                expiresIn: config('auth.jwt.refresh.expiresIn'),
+                audience: audience,
+            };
+            jwt.sign(
+                data,
+                config('auth.jwt.refresh.secret'),
                 options,
                 (err: any, token: string) => {
                     if (err) {
@@ -85,8 +108,9 @@ class AuthService {
 
 export default AuthService;
 export const {
-    verifyToken,
+    verifyAccessToken,
     generateAccessToken,
     hashPassword,
     comparePassword,
+    generateRefreshToken,
 } = new AuthService();
