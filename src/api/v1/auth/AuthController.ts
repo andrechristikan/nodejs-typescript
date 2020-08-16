@@ -4,16 +4,13 @@ import {
     generateRefreshToken as generateRefreshTokenService,
     comparePassword as comparePasswordService,
 } from './AuthService';
-import {
-    UserBaseInterface,
-    UserMiniInterface,
-    UserFullInterface,
-} from '../user/UserInterface';
+import { UserMiniInterface, UserDocument } from '../user/UserInterface';
 import {
     store as userStoreService,
     getByEmail as userGetByEmailService,
     getById as userGetByIdService,
     checkExist as userCheckExist,
+    getPasswordById as userGetPasswordById,
 } from '../user/UserService';
 import { getById as countryGetById } from '../country/CountryService';
 
@@ -30,35 +27,26 @@ class AuthController {
 
         userGetByEmailService(data.email)
             .then((checkEmail: UserMiniInterface) => {
-                userGetByIdService(checkEmail.id)
-                    .then((user: UserFullInterface) => {
+                Promise.all([
+                    userGetByIdService(checkEmail.id),
+                    userGetPasswordById(checkEmail.id),
+                ])
+                    .then(([user, password]) => {
                         const dataToken: dataToken = {
                             id: user.id,
-                        };
-
-                        const userResponse = {
-                            fullName: user.fullName,
                             email: user.email,
+                            mobileNumber: user.mobileNumber,
                         };
 
                         Promise.all([
-                            comparePasswordService(
-                                data.password,
-                                user.password
-                            ),
-                            generateAccessTokenService(
-                                dataToken,
-                                req.get('host')
-                            ),
-                            generateRefreshTokenService(
-                                dataToken,
-                                req.get('host')
-                            ),
+                            comparePasswordService(data.password, password),
+                            generateAccessTokenService(dataToken),
+                            generateRefreshTokenService(dataToken),
                         ])
                             .then(
                                 ([
                                     comparePassword,
-                                    generateToken,
+                                    accessToken,
                                     refreshToken,
                                 ]) => {
                                     if (!comparePassword) {
@@ -73,8 +61,7 @@ class AuthController {
                                         Enum.HttpSuccessStatusCode.OK,
                                         language('auth.login.formSuccess'),
                                         {
-                                            user: userResponse,
-                                            accessToken: generateToken,
+                                            accessToken: accessToken,
                                             refreshToken: refreshToken,
                                         }
                                     );
@@ -129,7 +116,7 @@ class AuthController {
                     next(new APIError(Enum.SystemErrorCode.COUNTRY_NOT_FOUND));
                 } else {
                     userStoreService(data)
-                        .then((user: UserBaseInterface) => {
+                        .then((user: UserDocument) => {
                             const response = new APIResponse(
                                 Enum.HttpSuccessStatusCode.CREATED,
                                 language('auth.signUp.formSuccess')

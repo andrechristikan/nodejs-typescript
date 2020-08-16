@@ -25,8 +25,18 @@ const routers: defaultRoute[] = [
         ],
     },
     {
-        prefix: '/test',
+        prefix: '/',
         middleware: 'AuthMiddleware@isAuthenticated',
+    },
+    {
+        prefix: '/user',
+        routes: [
+            {
+                controller: 'UserController@profile',
+                url: '/profile',
+                method: 'get',
+            },
+        ],
     },
 ];
 

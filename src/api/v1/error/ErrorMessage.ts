@@ -44,6 +44,16 @@ class ErrorMessage {
                     httpCode: Enum.HttpErrorStatusCode.INTERNAL_SERVER_ERROR,
                     message: language('auth.login.tokenGenerateFailed'),
                 };
+            case Enum.SystemErrorCode.INVALID_AUDIENCE:
+                return {
+                    httpCode: Enum.HttpErrorStatusCode.BAD_REQUEST,
+                    message: language('auth.login.invalidAudience'),
+                };
+            case Enum.SystemErrorCode.AUDIENCE_NOT_FOUND:
+                return {
+                    httpCode: Enum.HttpErrorStatusCode.BAD_REQUEST,
+                    message: language('auth.login.audienceNotFound'),
+                };
 
             // ! SIGN UP
             case Enum.SystemErrorCode.SIGN_UP_FAILED:

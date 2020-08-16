@@ -7,19 +7,27 @@ class AuthMiddleware {
         res: Response,
         next: NextFunction
     ): Promise<void> {
-        const authHeader = req.headers.authorization;
+        const authHeader: string = req.headers.authorization;
+        
         if (authHeader) {
             const token = authHeader.split(' ')[1];
-            verifyAccessToken(token, req.get('host'))
+            verifyAccessToken(token)
                 .then((dataToken: dataToken) => {
+                    const userLogged: string = dataToken.id;
+                    req.user = userLogged;
                     next();
                 })
-                .catch((err: any) => {
-                    next(new APIError(Enum.SystemErrorCode.INVALID_TOKEN));
+                .catch((errToken: any) => {
+                    next(
+                        new APIError(
+                            Enum.SystemErrorCode.INVALID_TOKEN
+                        )
+                    );
                 });
         } else {
             next(new APIError(Enum.SystemErrorCode.TOKEN_REQUIRED));
         }
+
     }
 }
 

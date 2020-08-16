@@ -14,6 +14,8 @@ type login = {
 
 type dataToken = {
     id: string;
+    email: string;
+    mobileNumber?: string;
 };
 
 type userResponse = {
@@ -24,4 +26,17 @@ type userResponse = {
 type tokenGenerate = {
     token: string;
     expiresIn: string;
+};
+
+type optionGenerateToken = {
+    audience?: string | Array<string>;
+    algorithm: string;
+    expiresIn: string;
+    issuer: string;
+};
+
+type optionVerifyToken = {
+    audience?: string | Array<string>;
+    algorithm: string;
+    issuer: string;
 };

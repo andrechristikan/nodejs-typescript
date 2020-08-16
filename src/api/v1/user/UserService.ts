@@ -1,8 +1,9 @@
 import userModel from './UserModel';
 import {
-    UserBaseInterface,
+    UserDocument,
     UserMiniInterface,
-    UserFullInterface,
+    UserBaseInterface,
+    UserPasswordInterface,
 } from './UserInterface';
 
 class UserService {
@@ -36,7 +37,7 @@ class UserService {
                     },
                     { _id: 1 }
                 )
-                .exec((err, user: UserMiniInterface) => {
+                .exec((err: any, user: UserMiniInterface) => {
                     if (err) {
                         reject(err);
                     }
@@ -46,12 +47,13 @@ class UserService {
         });
     }
 
-    public async getById(id: string): Promise<UserFullInterface> {
+    public async getById(id: string): Promise<UserBaseInterface> {
         return new Promise((resolve, reject) => {
             userModel
                 .findById(id)
-                .populate('countries')
-                .exec((err, user: UserFullInterface) => {
+                .select('-password')
+                .populate('country')
+                .exec((err: any, user: UserBaseInterface) => {
                     if (err) {
                         reject(err);
                     }
@@ -61,10 +63,25 @@ class UserService {
         });
     }
 
-    public async store(data: userStore): Promise<UserBaseInterface> {
+    public async getPasswordById(id: string): Promise<string> {
+        return new Promise((resolve, reject) => {
+            userModel
+                .findById(id)
+                .select('password')
+                .exec((err: any, user: UserPasswordInterface) => {
+                    if (err) {
+                        reject(err);
+                    }
+
+                    resolve(user.password);
+                });
+        });
+    }
+
+    public async store(data: userStore): Promise<UserDocument> {
         return new Promise((resolve, reject) => {
             const newUser = new userModel(data);
-            newUser.save((err, user: UserBaseInterface) => {
+            newUser.save((err: any, user: UserDocument) => {
                 if (err) {
                     reject(err);
                 }
@@ -100,7 +117,7 @@ class UserService {
 
                     resolve(validated);
                 })
-                .catch((err) => {
+                .catch((err: any) => {
                     reject(err);
                 });
         });
@@ -114,4 +131,5 @@ export const {
     store,
     getById,
     checkExist,
+    getPasswordById,
 } = new UserService();

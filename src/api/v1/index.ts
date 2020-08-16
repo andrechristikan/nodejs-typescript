@@ -1,10 +1,11 @@
 import router from './routes/router';
 import languages from './languages';
 import TestController from './test/TestController';
-import APIError from './errors/APIError';
-import { SystemErrorCode } from './errors/Enum';
+import APIError from './error/APIError';
+import { SystemErrorCode } from './error/Enum';
 import AuthMiddleware from './auth/AuthMiddleware';
 import AuthController from './auth/AuthController';
+import UserController from './user/UserController';
 import VersionAbstractClass from '../../core/version/VersionAbstractClass';
 
 class Version1 extends VersionAbstractClass {
@@ -35,6 +36,7 @@ class Version1 extends VersionAbstractClass {
         this.controllers = {
             TestController,
             AuthController,
+            UserController,
         };
     }
 

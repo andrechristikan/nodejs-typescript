@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose';
 import { NextFunction } from 'express';
 import { hashPassword } from '../auth/AuthService';
-import { UserDocument, UserBaseInterface } from './UserInterface';
+import { UserDocument } from './UserInterface';
 
 const tableName = 'users';
 
@@ -37,7 +37,7 @@ const userSchema = new Schema({
 });
 
 // Document middleware
-userSchema.pre<UserBaseInterface>('save', function save(next: NextFunction) {
+userSchema.pre<UserDocument>('save', function save(next: NextFunction) {
     const user = this as UserDocument;
     user.email = user.email.toLowerCase();
     user.firstName = user.firstName.toLowerCase();
@@ -56,7 +56,7 @@ userSchema.pre<UserBaseInterface>('save', function save(next: NextFunction) {
         });
 });
 
-userSchema.pre<UserBaseInterface>('find', function save(next: NextFunction) {
+userSchema.pre<UserDocument>('find', function save(next: NextFunction) {
     const user = this as UserDocument;
     if (user.email) {
         user.email = user.email.toLowerCase();
@@ -72,7 +72,7 @@ userSchema.pre<UserBaseInterface>('find', function save(next: NextFunction) {
     next();
 });
 
-userSchema.pre<UserBaseInterface>('findOne', function save(next: NextFunction) {
+userSchema.pre<UserDocument>('findOne', function save(next: NextFunction) {
     const user = this as UserDocument;
     if (user.email) {
         user.email = user.email.toLowerCase();
@@ -93,4 +93,4 @@ userSchema.virtual('fullName').get(function () {
 });
 
 // Default export
-export default model<UserBaseInterface>(tableName, userSchema);
+export default model<UserDocument>(tableName, userSchema);

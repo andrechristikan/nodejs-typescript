@@ -3,6 +3,7 @@ export default {
     password: {
         salt: 'gTQxq251q3Ewqw14qe1',
     },
+    issuer: 'ac.k',
     jwt: {
         access: {
             secret: env('JWT_ACCESS_TOKEN_SECRET'),
@@ -13,6 +14,6 @@ export default {
             secret: env('JWT_REFRESH_TOKEN_SECRET'),
             algorithm: 'HS256',
             expiresIn: env('JWT_REFRESH_TOKEN_LIFE'),
-        }
+        },
     },
 };

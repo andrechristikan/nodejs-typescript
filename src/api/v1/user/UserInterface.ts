@@ -8,20 +8,13 @@ export interface UserDocument extends Document {
     firstName: string;
     lastName: string;
 }
-
-export interface UserBaseInterface extends UserDocument {
-    fullName: string;
-}
-
-
-export interface UserFullInterface extends Document {
+export interface UserBaseInterface extends Document {
     country: {
         mobileNumberCode: string;
         countryCode: string;
         countryName: string;
     };
     mobileNumber: string;
-    password: string;
     email: string;
     firstName: string;
     lastName: string;
@@ -30,4 +23,9 @@ export interface UserFullInterface extends Document {
 
 export interface UserMiniInterface extends Document {
     _id: Schema.Types.ObjectId;
+}
+
+export interface UserPasswordInterface extends Document {
+    _id: Schema.Types.ObjectId;
+    password: string;
 }

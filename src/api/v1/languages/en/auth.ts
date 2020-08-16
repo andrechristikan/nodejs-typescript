@@ -6,6 +6,8 @@ export default {
         tokenRequired: 'Token require to getting this endpoint.',
         invalidToken: 'Token invalid.',
         tokenGenerateFailed: 'Failed to generate token.',
+        invalidAudience: 'Invalid audience',
+        audienceNotFound: 'Audience not found',
     },
     signUp: {
         formSuccess: 'Sign up success.',

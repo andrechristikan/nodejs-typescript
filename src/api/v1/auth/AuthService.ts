@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 import cryptoJS from 'crypto-js';
 
 class AuthService {
@@ -7,11 +7,13 @@ class AuthService {
         audience?: string | Array<string>
     ): Promise<object> {
         return new Promise((resolve, reject) => {
-            const options = {
+            const options: optionVerifyToken = {
                 algorithm: config('auth.jwt.access.algorithm'),
-                maxAge: config('auth.jwt.access.maxAge'),
-                audience: audience,
+                issuer: config('auth.issuer'),
             };
+            if (audience) {
+                options.audience = audience;
+            }
             jwt.verify(
                 token,
                 config('auth.jwt.access.secret'),
@@ -31,15 +33,18 @@ class AuthService {
         audience?: string | Array<string>
     ): Promise<string> {
         return new Promise((resolve, reject) => {
-            const options = {
+            const options: optionGenerateToken = {
                 algorithm: config('auth.jwt.access.algorithm'),
                 expiresIn: config('auth.jwt.access.expiresIn'),
-                audience: audience,
+                issuer: config('auth.issuer'),
             };
+            if (audience) {
+                options.audience = audience;
+            }
             jwt.sign(
                 data,
                 config('auth.jwt.access.secret'),
-                options,
+                options as SignOptions,
                 (err: any, token: string) => {
                     if (err) {
                         reject(err);
@@ -55,15 +60,18 @@ class AuthService {
         audience?: string | Array<string>
     ): Promise<string> {
         return new Promise((resolve, reject) => {
-            const options = {
+            const options: optionGenerateToken = {
                 algorithm: config('auth.jwt.refresh.algorithm'),
                 expiresIn: config('auth.jwt.refresh.expiresIn'),
-                audience: audience,
+                issuer: config('auth.issuer'),
             };
+            if (audience) {
+                options.audience = audience;
+            }
             jwt.sign(
                 data,
                 config('auth.jwt.refresh.secret'),
-                options,
+                options as SignOptions,
                 (err: any, token: string) => {
                     if (err) {
                         reject(err);
@@ -74,9 +82,9 @@ class AuthService {
         });
     }
 
-    public async decodeAccessToken(token: string) {
+    public async decodeAccessToken(token: string): Promise<dataToken> {
         return new Promise((resolve, reject) => {
-            resolve(jwt.decode(token));
+            resolve(jwt.decode(token) as dataToken);
         });
     }
 
@@ -86,10 +94,10 @@ class AuthService {
                 passwordString,
                 config('auth.password.salt')
             );
-            const passwordHashedBase64: string = passwordHashed.toString(
+            const passwordDigest: string = passwordHashed.toString(
                 cryptoJS.enc.Base64
             );
-            resolve(passwordHashedBase64);
+            resolve(passwordDigest);
         });
     }
 
@@ -99,13 +107,13 @@ class AuthService {
     ): Promise<boolean> {
         return new Promise((resolve, reject) => {
             this.hashPassword(passwordString)
-                .then((passwordHashedBase64) => {
-                    if (passwordHashedBase64 !== passwordHashed) {
+                .then((passwordDigest: string) => {
+                    if (passwordDigest !== passwordHashed) {
                         resolve(false);
                     }
                     resolve(true);
                 })
-                .catch((err) => {
+                .catch((err: any) => {
                     reject(err);
                 });
         });
