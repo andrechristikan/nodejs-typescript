@@ -31,7 +31,7 @@ class Database {
                 });
             });
 
-        if (env('ENV') === 'debug') {
+        if (config('core.debug') === 'debug') {
             mongoose.set('debug', true);
         }
     }

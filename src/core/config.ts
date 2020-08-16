@@ -4,6 +4,7 @@ import database from '../configs/Database';
 import session from '../configs/Session';
 import logger from '../configs/Logger';
 import auth from '../configs/Auth';
+import core from '../configs/Core';
 
 class Config {
     public configs: object | string;
@@ -20,6 +21,7 @@ class Config {
             session,
             logger,
             auth,
+            core
         };
     }
 

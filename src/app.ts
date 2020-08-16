@@ -24,9 +24,9 @@ class App {
         // ? Configuration App
         this.app = express();
         const languageList: languages =
-            Versioning[`v${env('VERSION')}`].languages;
-        const ErrorList: languages = Versioning[`v${env('VERSION')}`].errors;
-        const coreClass = new Core(languageList[env('LANGUAGE')], ErrorList);
+            Versioning[`v${config('core.version')}`].languages;
+        const ErrorList: languages = Versioning[`v${config('core.version')}`].errors;
+        const coreClass = new Core(languageList[config('core.language')], ErrorList);
         coreClass.run();
 
         // ? DatabaseSession
@@ -38,8 +38,8 @@ class App {
             }),
         };
 
-        this.app.set('port', env('PORT') || 3000);
-        this.app.set('host', env('HOST') || 'localhost');
+        this.app.set('port', config('core.port') || 3000);
+        this.app.set('host', config('core.host') || 'localhost');
         this.app.use(compression());
         this.app.use(cors(config('cors')));
         this.app.use(helmet());
@@ -75,9 +75,9 @@ class App {
         });
 
         // ? Router
-        const routeList = Versioning[`v${env('VERSION')}`].router;
-        const middlewareList = Versioning[`v${env('VERSION')}`].middleware;
-        const controllerList = Versioning[`v${env('VERSION')}`].controllers;
+        const routeList = Versioning[`v${config('core.version')}`].router;
+        const middlewareList = Versioning[`v${config('core.version')}`].middleware;
+        const controllerList = Versioning[`v${config('core.version')}`].controllers;
         const routeClass = new Route(
             this.app,
             routeList,

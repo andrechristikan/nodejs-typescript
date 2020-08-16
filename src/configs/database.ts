@@ -1,5 +1,5 @@
 const host: string = env('DB_HOST') || 'localhost:27017';
-const name: string = env('DB_NAME') || 'databaseName';
+const name: string = env('DB_NAME') || 'ack';
 const user: string = env('DB_USER') || '';
 const password: string = env('DB_PASSWORD') || '';
 const poolSize = 10;

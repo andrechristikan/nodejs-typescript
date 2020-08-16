@@ -1,6 +1,6 @@
 class Version {
     public getVersion(): string {
-        return `v${env('VERSION')}`;
+        return `v${config('core.version')}`;
     }
 }
 

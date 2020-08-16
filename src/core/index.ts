@@ -35,7 +35,7 @@ class Core {
         logger.info(language('_core.app.core.env'));
         logger.info(language('_core.app.core.config'));
         logger.info(language('_core.app.core.running'));
-        if (env('ENV') === 'production') {
+        if (config('core.env') === 'production') {
             logger.info(this.env);
             logger.info(this.config);
         }

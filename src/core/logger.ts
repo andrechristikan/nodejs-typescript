@@ -29,7 +29,7 @@ class Logger {
 
         const skip: any = (req: Request, res: Response) => {
             const url: string = req.originalUrl.replace(
-                `/${env('ROUTE_PREFIX')}/v${env('VERSION')}`,
+                `/${config('core.routePrefix')}/v${config('core.version')}`,
                 ''
             );
 

@@ -58,7 +58,7 @@ class Route {
         });
 
         // prefix route api
-        this.app.use(`/${env('ROUTE_PREFIX')}/v${env('VERSION')}`, router);
+        this.app.use(`/${config('core.routePrefix')}/v${config('core.version')}`, router);
     }
 
     private setRoute(
