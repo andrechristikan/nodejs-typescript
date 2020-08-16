@@ -21,7 +21,7 @@ class Config {
             session,
             logger,
             auth,
-            core
+            core,
         };
     }
 

@@ -3,7 +3,9 @@ export default {
         success: 'Default message.',
     },
     server: {
-        running: `App is listening at http://${config('core.host')}:${config('core.port')}`,
+        running: `App is listening at http://${config('core.host')}:${config(
+            'core.port'
+        )}`,
         exit: 'Press CTRL-C to stop',
     },
     core: {

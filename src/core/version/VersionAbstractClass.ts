@@ -1,4 +1,3 @@
-
 abstract class VersionAbstractClass {
     protected middleware: any;
     protected errors: any;
@@ -23,7 +22,7 @@ abstract class VersionAbstractClass {
         return setVersion;
     };
 
-    protected abstract setMiddleware(): void ;
+    protected abstract setMiddleware(): void;
 
     protected abstract setErrors(): void;
 

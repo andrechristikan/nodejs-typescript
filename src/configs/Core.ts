@@ -6,5 +6,5 @@ export default {
     host: env('HOST') || 'localhost',
     port: env('PORT') || 3000,
     language: env('LANGUAGE') || 'en',
-    name: env('NAME') || 'ac.k'
+    name: env('NAME') || 'ac.k',
 };

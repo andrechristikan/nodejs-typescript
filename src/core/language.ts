@@ -13,12 +13,12 @@ class Language {
         };
     }
 
-    public setLanguage (languages: object): void  {
+    public setLanguage(languages: object): void {
         this.languages = {
             ...this.languages,
             ...languages,
         };
-    };
+    }
 
     public language = (keys: string): string => {
         let localLang: any = this.languages;

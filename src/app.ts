@@ -25,8 +25,12 @@ class App {
         this.app = express();
         const languageList: languages =
             Versioning[`v${config('core.version')}`].languages;
-        const ErrorList: languages = Versioning[`v${config('core.version')}`].errors;
-        const coreClass = new Core(languageList[config('core.language')], ErrorList);
+        const ErrorList: languages =
+            Versioning[`v${config('core.version')}`].errors;
+        const coreClass = new Core(
+            languageList[config('core.language')],
+            ErrorList
+        );
         coreClass.run();
 
         // ? DatabaseSession
@@ -76,8 +80,10 @@ class App {
 
         // ? Router
         const routeList = Versioning[`v${config('core.version')}`].router;
-        const middlewareList = Versioning[`v${config('core.version')}`].middleware;
-        const controllerList = Versioning[`v${config('core.version')}`].controllers;
+        const middlewareList =
+            Versioning[`v${config('core.version')}`].middleware;
+        const controllerList =
+            Versioning[`v${config('core.version')}`].controllers;
         const routeClass = new Route(
             this.app,
             routeList,

@@ -58,7 +58,10 @@ class Route {
         });
 
         // prefix route api
-        this.app.use(`/${config('core.routePrefix')}/v${config('core.version')}`, router);
+        this.app.use(
+            `/${config('core.routePrefix')}/v${config('core.version')}`,
+            router
+        );
     }
 
     private setRoute(
@@ -70,44 +73,44 @@ class Route {
     ): void {
         switch (method) {
             case 'get':
-                if(middleware){
+                if (middleware) {
                     router.get(url, middleware, controller);
-                }else{
+                } else {
                     router.get(url, controller);
                 }
                 break;
             case 'post':
-                if(middleware){
+                if (middleware) {
                     router.post(url, middleware, controller);
-                }else{
+                } else {
                     router.post(url, controller);
                 }
                 break;
             case 'put':
-                if(middleware){
+                if (middleware) {
                     router.put(url, middleware, controller);
-                }else{
+                } else {
                     router.put(url, controller);
                 }
                 break;
             case 'delete':
-                if(middleware){
+                if (middleware) {
                     router.delete(url, middleware, controller);
-                }else{
+                } else {
                     router.delete(url, controller);
                 }
                 break;
             case 'patch':
-                if(middleware){
+                if (middleware) {
                     router.patch(url, middleware, controller);
-                }else{
+                } else {
                     router.patch(url, controller);
                 }
                 break;
             default:
-                if(middleware){
+                if (middleware) {
                     router.get(url, middleware, controller);
-                }else{
+                } else {
                     router.get(url, controller);
                 }
                 break;

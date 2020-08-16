@@ -8,7 +8,7 @@ class AuthMiddleware {
         next: NextFunction
     ): Promise<void> {
         const authHeader: string = req.headers.authorization;
-        
+
         if (authHeader) {
             const token = authHeader.split(' ')[1];
             verifyAccessToken(token)
@@ -18,16 +18,11 @@ class AuthMiddleware {
                     next();
                 })
                 .catch((errToken: any) => {
-                    next(
-                        new APIError(
-                            Enum.SystemErrorCode.INVALID_TOKEN
-                        )
-                    );
+                    next(new APIError(Enum.SystemErrorCode.INVALID_TOKEN));
                 });
         } else {
             next(new APIError(Enum.SystemErrorCode.TOKEN_REQUIRED));
         }
-
     }
 }
 

@@ -32,11 +32,11 @@ type optionGenerateToken = {
     audience?: string | Array<string>;
     algorithm: string;
     expiresIn: string;
-    issuer: string;
+    issuer: string | Array<string>;
 };
 
 type optionVerifyToken = {
     audience?: string | Array<string>;
     algorithm: string;
-    issuer: string;
+    issuer: string | Array<string>;
 };
